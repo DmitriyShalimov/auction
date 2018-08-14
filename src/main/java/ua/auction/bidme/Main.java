@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.slf4j.Logger;
 import ua.auction.bidme.dao.LotDao;
 import ua.auction.bidme.dao.UserDao;
 import ua.auction.bidme.dao.jdbc.JdbcLotDao;
@@ -24,12 +25,14 @@ import java.util.Properties;
 
 import static java.lang.Integer.valueOf;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
+import static org.slf4j.LoggerFactory.getLogger;
 
 
 public class Main {
+    private static Logger logger = getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-
+        logger.info("initializing project started ... ");
         DataSource dataSource = getDataSource();
 
         //dao
@@ -59,6 +62,7 @@ public class Main {
     }
 
     private static HikariDataSource getDataSource() {
+        logger.info("initializing datasource ... ");
         Properties properties =
                 new PropertyReader("properties/database-connection.properties")
                         .readProperties();
@@ -79,6 +83,7 @@ public class Main {
     }
 
     private static void startServer(ServletContextHandler context) throws Exception {
+        logger.info("starting server ...");
         Server server = new Server(8080);
         server.setHandler(context);
         server.start();
