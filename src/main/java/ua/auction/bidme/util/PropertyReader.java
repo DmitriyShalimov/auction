@@ -22,7 +22,7 @@ public class PropertyReader {
                 .getResourceAsStream(propertyFileName)) {
             prop.load(inputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return prop;

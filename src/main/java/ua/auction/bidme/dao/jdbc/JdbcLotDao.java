@@ -1,7 +1,7 @@
 package ua.auction.bidme.dao.jdbc;
 
 import ua.auction.bidme.dao.LotDao;
-import ua.auction.bidme.dao.jdbc.mapper.LotRowMapper;
+import ua.auction.bidme.dao.jdbc.mapper.implementation.LotRowMapper;
 import ua.auction.bidme.entity.Lot;
 
 import javax.sql.DataSource;
@@ -15,9 +15,9 @@ import java.util.List;
 public class JdbcLotDao implements LotDao {
     private static final LotRowMapper LOT_ROW_MAPPER = new LotRowMapper();
     private static final String GET_ALL_LOTS_SQL = "SELECT name, description, start_price, current_price, start_time, end_time,status, picture_link FROM \"Lots\" ";
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    public void setDataSource(DataSource dataSource) {
+    public JdbcLotDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
