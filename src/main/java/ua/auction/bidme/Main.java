@@ -1,6 +1,6 @@
 package ua.auction.bidme;
 
-import org.postgresql.jdbc2.optional.PoolingDataSource;
+import ua.auction.bidme.dao.DatabaseConnector;
 import ua.auction.bidme.dao.LotDao;
 import ua.auction.bidme.dao.jdbc.JdbcLotDao;
 import ua.auction.bidme.service.LotService;
@@ -23,10 +23,8 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
         //dao
-        DataSource dataSource=new PoolingDataSource();
-        ((PoolingDataSource) dataSource).setUser("postgres");
-        ((PoolingDataSource) dataSource).setPassword("qwerty");
-        ((PoolingDataSource) dataSource).setDatabaseName("auction");
+        DataSource dataSource = DatabaseConnector.getInstance().getDataSource();
+
         LotDao lotDao=new JdbcLotDao();
         ((JdbcLotDao) lotDao).setDataSource(dataSource);
 
@@ -35,11 +33,19 @@ public class Main {
         ((DefaultLotService) lotService).setLotDao(lotDao);
 
         //servlets
-        LotServlet lotServlet = new LotServlet();
-        lotServlet.setLotService(lotService);
-        context.addServlet(new ServletHolder(lotServlet), "/auction");
+        context.addServlet(new ServletHolder(getLotServlet(lotService)), "/auction");
 
         //server config
+        startServer(context);
+    }
+
+    private static LotServlet getLotServlet(LotService lotService) {
+        LotServlet lotServlet = new LotServlet();
+        lotServlet.setLotService(lotService);
+        return lotServlet;
+    }
+
+    private static void startServer(ServletContextHandler context) throws Exception {
         Server server = new Server(8080);
         server.setHandler(context);
         server.start();

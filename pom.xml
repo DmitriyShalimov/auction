@@ -7,6 +7,11 @@
     <groupId>ua.auction</groupId>
     <artifactId>bidMe</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <groovy-all.version>2.4.4</groovy-all.version>
+    </properties>
+
     <build>
         <finalName>auction</finalName>
         <plugins>
@@ -86,6 +91,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy-all.version}</version>
             <scope>test</scope>
         </dependency>
 
