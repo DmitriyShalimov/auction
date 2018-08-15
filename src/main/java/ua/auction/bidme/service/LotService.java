@@ -1,9 +1,12 @@
 package ua.auction.bidme.service;
 
 import ua.auction.bidme.entity.Lot;
+import ua.auction.bidme.filter.LotFilter;
 
 import java.util.List;
 
 public interface LotService {
-    List<Lot> getAll();
+    List<Lot> getAll(LotFilter lotFilter);
+
+    int getPageCount(LotFilter lotFilter);
 }

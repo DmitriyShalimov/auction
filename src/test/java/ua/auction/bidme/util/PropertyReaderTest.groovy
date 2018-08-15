@@ -15,6 +15,5 @@ class PropertyReaderTest{
         assertNotNull(properties)
         assertNotNull(properties.get("user"))
         assertNotNull(properties.get("password"))
-        assertNotNull(properties.get("db_name"))
     }
 }

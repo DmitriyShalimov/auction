@@ -32,7 +32,7 @@ public class DatabaseConnector {
     }
 
     private DataSource configureDb() {
-        PropertyReader reader = new PropertyReader("database-connection.properties");
+        PropertyReader reader = new PropertyReader("properties/database-connection.properties");
         Properties properties = reader.readProperties();
         PoolingDataSource dataSource = new PoolingDataSource();
         dataSource.setUser(properties.getProperty("user"));
