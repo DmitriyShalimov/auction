@@ -1,5 +1,6 @@
 package ua.auction.bidme.web.servlets;
 
+import org.slf4j.Logger;
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.service.security.AuthenticationService;
 
@@ -10,9 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.slf4j.LoggerFactory.getLogger;
 import static ua.auction.bidme.web.templater.PageGenerator.instance;
-
+//todo replace domain with dto
 public class LoginServlet extends HttpServlet {
+    private final Logger logger = getLogger(LoginServlet.class);
+
     private final AuthenticationService authenticationService;
 
     public LoginServlet(AuthenticationService authenticationService) {
@@ -38,8 +42,10 @@ public class LoginServlet extends HttpServlet {
         }
         String sessionId = req.getSession().getId();
         if (authenticationService.tryAuthenticate(email, password, sessionId)) {
+            logger.info("user with email {} successfully logged in ", email);
             resp.setStatus(SC_OK);
         } else {
+            logger.warn("invalid user data for email {}, unnavble to login", email);
             resp.setStatus(SC_UNAUTHORIZED);
         }
 
