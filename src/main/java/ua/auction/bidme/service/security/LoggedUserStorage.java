@@ -9,7 +9,7 @@ import java.util.Map;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class LoggedUserStorage {
-    private final Logger logger = getLogger(LoggedUserStorage.class);
+    private final Logger logger = getLogger(getClass());
 
     private Map<String, User> storage;
 

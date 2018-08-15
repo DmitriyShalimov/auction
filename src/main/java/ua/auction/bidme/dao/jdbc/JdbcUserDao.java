@@ -16,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class JdbcUserDao implements UserDao {
     //todo sql queries to property file
-    private final Logger logger = getLogger(JdbcUserDao.class);
+    private final Logger logger = getLogger(getClass());
     private final UserMapper USER_MAPPER = new UserMapper();
     private final String GET_USER_BY_EMAIL_SQL = "SELECT u.id, u.email, u.password from auction.user as u WHERE u.email = ?;";
 
@@ -42,7 +42,7 @@ public class JdbcUserDao implements UserDao {
             }
 
         } catch (SQLException e) {
-            logger.error("an error {} ocurred duaring reading user {} from db", e.getMessage(), email);
+            logger.error("an error {} occurred during reading user {} from db", e.getMessage(), email);
             throw new RuntimeException(e);
         }
 

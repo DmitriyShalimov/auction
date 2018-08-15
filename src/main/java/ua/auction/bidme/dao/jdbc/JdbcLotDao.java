@@ -22,7 +22,7 @@ public class JdbcLotDao implements LotDao {
     private static final String GET_ALL_LOTS_SQL = "SELECT name, description, start_price, current_price, start_time, end_time,status, picture_link FROM \"auction.lot\" ";
 
     private final DataSource dataSource;
-    private final Logger logger = getLogger(JdbcLotDao.class);
+    private final Logger logger = getLogger(getClass());
 
     private static final String GET_LOTS_COUNT = "SELECT COUNT(*) AS rowcount FROM \"auction.lot\"";
 
@@ -49,10 +49,11 @@ public class JdbcLotDao implements LotDao {
             while (resultSet.next()) {
                 lots.add(LOT_ROW_MAPPER.mapRow(resultSet));
             }
-            logger.info("query getAllLots from db finished. {} lots returnedit took {} ms",
+            logger.info("query getAllLots from db finished. {} lots returned. it took {} ms",
                     lots.size(), currentTimeMillis() - start);
             return lots;
         } catch (SQLException e) {
+            logger.error("an error {} occurred during getAllLots from db", e.getMessage());
             throw new RuntimeException(e);
         }
     }

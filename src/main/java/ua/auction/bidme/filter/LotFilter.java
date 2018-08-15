@@ -30,4 +30,13 @@ public class LotFilter {
     public void setPage(int page) {
         this.page = page;
     }
+
+    @Override
+    public String toString() {
+        return "LotFilter{" +
+                "lotStatus=" + lotStatus +
+                ", page=" + page +
+                ", lotPerPage=" + lotPerPage +
+                '}';
+    }
 }

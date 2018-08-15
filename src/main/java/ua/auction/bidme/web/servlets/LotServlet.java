@@ -2,10 +2,8 @@ package ua.auction.bidme.web.servlets;
 
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.entity.Lot;
-
 import ua.auction.bidme.entity.LotStatus;
 import ua.auction.bidme.filter.LotFilter;
-
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.web.templater.PageGenerator;
 
@@ -21,6 +19,10 @@ public class LotServlet extends HttpServlet {
 
     private LotService lotService;
 
+    public LotServlet(LotService lotService) {
+        this.lotService = lotService;
+    }
+
     //todo [getAll] fix encoding
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -31,10 +33,10 @@ public class LotServlet extends HttpServlet {
         String status = request.getParameter("status");
         String parameterPage = request.getParameter("page");
         int page;
-        if (parameterPage==null) {
+        if (parameterPage == null) {
             page = 1;
-        }else{
-            page=Integer.parseInt(parameterPage);
+        } else {
+            page = Integer.parseInt(parameterPage);
         }
         if (status != null) {
             lotFilter.setLotStatus(LotStatus.getTypeById(status));

@@ -10,7 +10,7 @@ import static java.lang.Thread.currentThread;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class PropertyReader {
-    private final Logger logger = getLogger(PropertyReader.class);
+    private final Logger logger = getLogger(getClass());
     private String propertyFileName;
 
     public PropertyReader(String propertyFileName) {

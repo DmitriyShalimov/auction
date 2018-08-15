@@ -15,7 +15,7 @@ import static ua.auction.bidme.web.templater.PageGenerator.instance;
 
 //todo replace domain with dto
 public class LoginServlet extends HttpServlet {
-    private final Logger logger = getLogger(LoginServlet.class);
+    private final Logger logger = getLogger(getClass());
 
     private final AuthenticationService authenticationService;
 
@@ -29,6 +29,7 @@ public class LoginServlet extends HttpServlet {
         resp.getWriter().println(instance().getPage(context, "login"));
         resp.setContentType("text/html;charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
+        //  resp.sendRedirect("/home");
     }
 
     @Override

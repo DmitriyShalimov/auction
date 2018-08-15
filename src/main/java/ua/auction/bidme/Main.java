@@ -7,12 +7,16 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import ua.auction.bidme.dao.LotDao;
+import ua.auction.bidme.dao.MessageDao;
 import ua.auction.bidme.dao.UserDao;
 import ua.auction.bidme.dao.jdbc.JdbcLotDao;
+import ua.auction.bidme.dao.jdbc.JdbcMessageDao;
 import ua.auction.bidme.dao.jdbc.JdbcUserDao;
 import ua.auction.bidme.service.LotService;
+import ua.auction.bidme.service.MessageService;
 import ua.auction.bidme.service.UserService;
 import ua.auction.bidme.service.impl.DefaultLotService;
+import ua.auction.bidme.service.impl.DefaultMessageService;
 import ua.auction.bidme.service.impl.DefaultUserService;
 import ua.auction.bidme.service.security.AuthenticationService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
@@ -38,11 +42,12 @@ public class Main {
         //dao
         LotDao lotDao = new JdbcLotDao(dataSource);
         UserDao userDao = new JdbcUserDao(dataSource);
+        MessageDao messageDao = new JdbcMessageDao(dataSource);
 
         //services
         LotService lotService = new DefaultLotService(lotDao);
-
-        UserService userService = new DefaultUserService(userDao);
+        MessageService messageService = new DefaultMessageService(messageDao);
+        UserService userService = new DefaultUserService(userDao, messageService);
         LoggedUserStorage storage = new LoggedUserStorage();
         AuthenticationService authenticationService = new AuthenticationService(userService, storage);
 
@@ -50,15 +55,11 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(SESSIONS);
 
         //servlets
-        context.addServlet(new ServletHolder(getLotServlet(lotService)), "/auction");
-        context.addServlet(new ServletHolder(getLoginServlet(authenticationService)), "/login");
+        context.addServlet(new ServletHolder(new LotServlet(lotService)), "/auction");
+        context.addServlet(new ServletHolder(new LoginServlet(authenticationService)), "/login");
 
         //server config
         startServer(context);
-    }
-
-    private static LoginServlet getLoginServlet(AuthenticationService authenticationService) {
-        return new LoginServlet(authenticationService);
     }
 
     private static HikariDataSource getDataSource() {
@@ -74,12 +75,6 @@ public class Main {
         config.setMinimumIdle(valueOf(properties.getProperty("minIdle")));
         config.setMaximumPoolSize(valueOf(properties.getProperty("maxActive")));
         return new HikariDataSource(config);
-    }
-
-    private static LotServlet getLotServlet(LotService lotService) {
-        LotServlet lotServlet = new LotServlet();
-        lotServlet.setLotService(lotService);
-        return lotServlet;
     }
 
     private static void startServer(ServletContextHandler context) throws Exception {
