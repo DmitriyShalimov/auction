@@ -4,34 +4,162 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="">
-    <title>auction</title>
+    <title>Bid me</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
           integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <style type="text/css">
+        body {
+            font-size: 16px;
+            color: #fff;
+            background-color: #C7C7C7;
+        }
 
+        /*Header*/
+        .navbar {
+            background-color: #828282;
+        }
 
+        .navbar-brand {
+            padding-top: 25px;
+        }
+
+        .navbar-toggler {
+            border: 1px solid #DBDBDB;
+        }
+
+        .navbar-brand h1 {
+            color: #DBDBDB;
+            font-size: 2em;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px #222;
+            margin-top: 0;
+            margin-bottom: 0;
+            line-height: .75;
+        }
+
+        .navbar-brand a:hover, .navbar-brand a:focus {
+            text-decoration: none;
+        }
+
+        .nav-item a {
+            margin-top: 10px;
+            margin-left: 10px;
+            text-align: center;
+            color: #DBDBDB;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        /*main content*/
+        .lot-tile {
+            position: relative;
+            border: 3px solid #DBDBDB;
+            overflow: hidden;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 15px;
+        }
+
+        .lot-tile span {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            background-color: #000;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .lot-tile:hover {
+            box-shadow: 0 1px 5px 1px #cccccc;
+        }
+
+        .lot-tile div {
+            padding: 0px;
+            position: absolute;
+            text-align: center;
+            background-color: #C7C7C7;
+            width: 80px;
+            left: 0;
+        }
+
+        /*Footer*/
+        .panel-footer {
+            margin-top: 30px;
+            padding-top: 35px;
+            padding-bottom: 30px;
+            background-color: #222;
+            border-top: 0;
+        }
+
+    </style>
 </head>
 <body>
-
-
-<!--main-content-->
-<div id="main-content" class="container">
-    <h2 id="phone-models-title" class="text-center">Lots</h2>
-    <section class="row">
-
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 " th:each="lot : ${lots}">
-            <div class="phone-tile">
-                <div th:text="${lot.currentPrice}">price</div>
-                <img width="200" height="200" th:src=${lot.image}>
-                <span th:text=${lot.title}>title</span>
+<header>
+    <nav class="navbar  navbar-expand-md justify-content-between">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse dual-nav w-50 order-1 order-md-0">
 
             </div>
+            <a href="/" class="navbar-brand mx-auto d-block text-center order-0 order-md-1 w-25"><H1>bit me</H1></a>
+            <div class="navbar-collapse collapse dual-nav w-50 order-2">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" th:if=${login}><a href="/logout">Log out</a></li>
+
+                    <li class="nav-item" th:unless=${login}>
+                        <a href="/login">login</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
+</header>
+<!--main-content-->
+<div id="main-content" class="container">
+    <input id="status" type="checkbox" name="status" th:checked="${active}">Show only active<br>
+</div>
+<section class=" row">
+    <div class="col-lg-4 col-md-6 col-sm-12  " th:each="lot : ${lots}">
+        <div class="lot-tile">
+            <div th:text="${lot.status}"></div>
+            <img width="400" height="300" th:src=${lot.image}>
+            <span th:text=${lot.title}>title</span>
 
-    </section>
+        </div>
+    </div>
+</section>
 
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item"><a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
+    </ul>
+</nav>
 </div><!-- End of #main-content -->
 
-
+<!--Footer-->
+<footer class="panel-footer">
+    <div style="text-align: center;" class="container">
+        <span>Made by BidMeInc 2018</span><br>
+    </div>
+</footer>
+<!--End of footer-->
+<script>
+    var checkbox = document.querySelector("input[id=status]");
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            window.location.href = "/auction?status=A";
+        } else {
+            window.location.href = "/auction";
+        }
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -42,5 +170,4 @@
         integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
