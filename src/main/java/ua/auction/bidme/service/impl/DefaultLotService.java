@@ -8,14 +8,15 @@ import java.util.List;
 
 public class DefaultLotService implements LotService {
 
-    private LotDao lotDao;
+    private final LotDao lotDao;
+
+    public DefaultLotService(LotDao lotDao) {
+        this.lotDao = lotDao;
+    }
 
     @Override
     public List<Lot> getAll() {
         return lotDao.getAll();
     }
 
-    public void setLotDao(LotDao lotDao) {
-        this.lotDao = lotDao;
-    }
 }
