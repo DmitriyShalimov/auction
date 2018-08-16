@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* ua.auction.bidme.Main.class -Dserver.port=$PORT
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* ua.auction.bidme.Main -Dserver.port=$PORT
