@@ -68,12 +68,16 @@ public class Main {
                 new PropertyReader("properties/database-connection.properties")
                         .readProperties();
         HikariConfig config = new HikariConfig();
+
         config.setDriverClassName(properties.getProperty("driver"));
         config.setJdbcUrl(properties.getProperty("url"));
         config.setUsername(properties.getProperty("user"));
         config.setPassword(properties.getProperty("password"));
         config.setMinimumIdle(valueOf(properties.getProperty("minIdle")));
         config.setMaximumPoolSize(valueOf(properties.getProperty("maxActive")));
+
+        config.addDataSourceProperty("sslmode", properties.getProperty("sslmode"));
+
         return new HikariDataSource(config);
     }
 

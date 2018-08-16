@@ -26,6 +26,9 @@ import static org.mockito.Mockito.when;
 @PrepareForTest({DriverManager.class, JdbcLotDao.class})
 public class JdbcLotDaoTest {
 
+    private String sql = "SELECT name, description, start_price, current_price, start_time," +
+            "end_time,status, picture_link FROM auction.lot  LIMIT 0 OFFSET 0";
+
     @Test
     public void testGetAll() throws Exception {
         //    before
@@ -39,7 +42,7 @@ public class JdbcLotDaoTest {
 
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.createStatement()).thenReturn(statement);
-        when(statement.executeQuery("SELECT name, description, start_price, current_price, start_time, end_time,status, picture_link FROM \"auction.lot\" limit 0offset 0")).thenReturn(resultSet);
+        when(statement.executeQuery(sql)).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         Lot lot = new Lot();
         when(lotRowMapper.mapRow(resultSet)).thenReturn(lot);
