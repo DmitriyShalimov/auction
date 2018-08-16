@@ -29,11 +29,10 @@ public class LoginServlet extends HttpServlet {
         resp.getWriter().println(instance().getPage(context, "login"));
         resp.setContentType("text/html;charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
-        //  resp.sendRedirect("/home");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
@@ -45,11 +44,11 @@ public class LoginServlet extends HttpServlet {
         if (authenticationService.tryAuthenticate(email, password, sessionId)) {
             logger.info("user with email {} successfully logged in ", email);
             resp.setStatus(SC_OK);
+            resp.sendRedirect("/auction");
         } else {
             logger.warn("invalid user data for email {}, unnavble to login", email);
             resp.setStatus(SC_UNAUTHORIZED);
         }
-
     }
 
     private boolean isNullOrEmpty(String email) {

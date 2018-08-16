@@ -122,25 +122,26 @@
     </nav>
 </header>
 <!--main-content-->
-<div id="main-content" class="container">
-    <input id="status" type="checkbox" name="status" th:checked="${active}">Show only active<br>
-</div>
+
 <section class=" row">
-    <div class="col-lg-4 col-md-6 col-sm-12  " th:each="lot : ${lots}">
+
         <div class="lot-tile">
             <div th:text="${lot.status}"></div>
-           <a th:href="@{'/lot?id='+${lot.id}}"><img width="400" height="300" th:src=${lot.image}></a>
+            <img width="400" height="300" th:src=${lot.image}>
             <span th:text=${lot.title}>title</span>
+            <span th:text=${lot.currentPrice}></span>
 
         </div>
-    </div>
+
 </section>
 
-<nav aria-label="Page navigation">
-    <ul class="pagination">
-        <li th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item"><a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
-    </ul>
-</nav>
+<form action="/lot" method="post">
+    <input type="text" hidden th:value="${lot.currentPrice}" name="price" id="price">
+    <input type="text" hidden th:value="${lot.id}" name="id" id="id">
+    <button type="submit">BID ME</button>
+</form>
+<H1 th:if=${result}  th:text=${result}></H1>
+
 </div><!-- End of #main-content -->
 
 <!--Footer-->
@@ -150,16 +151,7 @@
     </div>
 </footer>
 <!--End of footer-->
-<script>
-    var checkbox = document.querySelector("input[id=status]");
-    checkbox.addEventListener('change', function () {
-        if (this.checked) {
-            window.location.href = "/auction?status=A";
-        } else {
-            window.location.href = "/auction";
-        }
-    });
-</script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

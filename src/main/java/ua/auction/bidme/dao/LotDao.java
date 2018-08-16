@@ -9,4 +9,8 @@ public interface LotDao {
     List<Lot> getAll(LotFilter lotFilter);
 
     int getPageCount(LotFilter lotFilter);
+
+    Lot get(int id);
+
+    boolean makeBid(int lotId, int price, int userId);
 }
