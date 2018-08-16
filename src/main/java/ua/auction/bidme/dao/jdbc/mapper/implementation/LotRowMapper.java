@@ -10,6 +10,7 @@ import java.sql.SQLException;
 public class LotRowMapper implements RowMapper<Lot> {
     public Lot mapRow(ResultSet resultSet) throws SQLException {
         Lot lot = new Lot();
+        lot.setId(resultSet.getInt("id"));
         lot.setTitle(resultSet.getString("name"));
         lot.setStartPrice(resultSet.getInt("start_price"));
         lot.setDescription(resultSet.getString("description"));

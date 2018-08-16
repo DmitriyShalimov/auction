@@ -25,4 +25,14 @@ public class DefaultLotService implements LotService {
         return lotDao.getPageCount(lotFilter);
     }
 
+    @Override
+    public Lot get(int id) {
+        return lotDao.get(id);
+    }
+
+    @Override
+    public boolean makeBid(int lotId, int price, int userId) {
+        return lotDao.makeBid(lotId, price, userId);
+    }
+
 }

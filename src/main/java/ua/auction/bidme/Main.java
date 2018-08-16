@@ -3,6 +3,7 @@ package ua.auction.bidme;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
@@ -21,10 +22,14 @@ import ua.auction.bidme.service.impl.DefaultUserService;
 import ua.auction.bidme.service.security.AuthenticationService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
 import ua.auction.bidme.util.PropertyReader;
+import ua.auction.bidme.web.security.SecurityFilter;
+import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.servlets.LoginServlet;
 import ua.auction.bidme.web.servlets.LotServlet;
 
+import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
+import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -56,8 +61,15 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(SESSIONS);
 
         //servlets
-        context.addServlet(new ServletHolder(new LotServlet(lotService)), "/auction");
+
+        context.addServlet(new ServletHolder(new HomeServlet(lotService, storage)), "/auction");
+        context.addServlet(new ServletHolder(new LotServlet(lotService, storage)), "/lot");
         context.addServlet(new ServletHolder(new LoginServlet(authenticationService)), "/login");
+
+        //security
+        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);
+        SecurityFilter securityFilter = new SecurityFilter(storage);
+        context.addFilter(new FilterHolder(securityFilter), "/lot", dispatcherTypes);
 
         //server config
         startServer(context);
@@ -77,6 +89,7 @@ public class Main {
         config.setMinimumIdle(valueOf(properties.getProperty("minIdle")));
         config.setMaximumPoolSize(valueOf(properties.getProperty("maxActive")));
         config.addDataSourceProperty("sslmode", properties.getProperty("sslmode"));
+
 
         return new HikariDataSource(config);
     }
