@@ -26,8 +26,7 @@ import static org.mockito.Mockito.when;
 @PrepareForTest({DriverManager.class, JdbcLotDao.class})
 public class JdbcLotDaoTest {
 
-    private String sql = "SELECT name, description, start_price, current_price, start_time," +
-            "end_time,status, picture_link FROM auction.lot  LIMIT 0 OFFSET 0";
+    private String sql = "SELECT id, name, description, start_price, current_price, start_time,end_time,status, picture_link FROM auction.lot  LIMIT 0 OFFSET 0";
 
     @Test
     public void testGetAll() throws Exception {
