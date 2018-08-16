@@ -75,7 +75,6 @@ public class Main {
         config.setPassword(properties.getProperty("password"));
         config.setMinimumIdle(valueOf(properties.getProperty("minIdle")));
         config.setMaximumPoolSize(valueOf(properties.getProperty("maxActive")));
-
         config.addDataSourceProperty("sslmode", properties.getProperty("sslmode"));
 
         return new HikariDataSource(config);
