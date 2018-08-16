@@ -30,6 +30,7 @@ import ua.auction.bidme.web.servlets.LotServlet;
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Properties;
 
 import static java.lang.Integer.valueOf;
@@ -95,7 +96,9 @@ public class Main {
 
     private static void startServer(ServletContextHandler context) throws Exception {
         logger.info("starting server ...");
-        Server server = new Server(8080);
+        int port = Optional.ofNullable(System.getenv("PORT")).map(Integer::valueOf).orElse(8080);
+
+        Server server = new Server(port);
         server.setHandler(context);
         server.start();
         logger.info("server started successful");
