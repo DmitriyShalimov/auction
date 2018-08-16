@@ -40,12 +40,10 @@ public class JdbcUserDao implements UserDao {
                         currentTimeMillis() - start);
                 return user;
             }
-
         } catch (SQLException e) {
             logger.error("an error {} occurred during reading user {} from db", e.getMessage(), email);
             throw new RuntimeException(e);
         }
-
         return null;
     }
 
