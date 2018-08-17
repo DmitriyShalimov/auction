@@ -6,16 +6,16 @@ public class Message {
     private final int id;
     private final String text;
     private final SuccessIndicator indicator;
-    private final Lot lot;
-    private final User user;
+    private final int lotId;
+    private final int userId;
     private final LocalDateTime dateTime;
 
     private Message(Builder builder) {
         this.id = builder.id;
         this.text = builder.text;
         this.indicator = builder.indicator;
-        this.lot = builder.lot;
-        this.user = builder.user;
+        this.lotId = builder.lotId;
+        this.userId = builder.userId;
         this.dateTime = builder.dateTime;
     }
 
@@ -31,12 +31,12 @@ public class Message {
         return indicator;
     }
 
-    public Lot getLot() {
-        return lot;
+    public int getLotId() {
+        return lotId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
     public LocalDateTime getDateTime() {
@@ -49,8 +49,8 @@ public class Message {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", indicator=" + indicator +
-                ", lot=" + lot +
-                ", user=" + user +
+                ", lot=" + lotId +
+                ", user=" + userId +
                 ", dateTime=" + dateTime +
                 '}';
     }
@@ -59,8 +59,8 @@ public class Message {
         private int id;
         private String text;
         private SuccessIndicator indicator;
-        private Lot lot;
-        private User user;
+        private int lotId;
+        private int userId;
         private LocalDateTime dateTime;
 
         public Builder(String text) {
@@ -82,13 +82,13 @@ public class Message {
             return this;
         }
 
-        public Builder lot(Lot lot) {
-            this.lot = lot;
+        public Builder lotId(int lotId) {
+            this.lotId = lotId;
             return this;
         }
 
-        public Builder user(User user) {
-            this.user = user;
+        public Builder userId(int userId) {
+            this.userId = userId;
             return this;
         }
 

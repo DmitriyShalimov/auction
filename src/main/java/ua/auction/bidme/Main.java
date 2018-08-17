@@ -19,13 +19,14 @@ import ua.auction.bidme.service.UserService;
 import ua.auction.bidme.service.impl.DefaultLotService;
 import ua.auction.bidme.service.impl.DefaultMessageService;
 import ua.auction.bidme.service.impl.DefaultUserService;
+import ua.auction.bidme.service.listener.BidListener;
 import ua.auction.bidme.service.security.AuthenticationService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
 import ua.auction.bidme.util.PropertyReader;
-import ua.auction.bidme.web.security.SecurityFilter;
-import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.security.LogOutServlet;
 import ua.auction.bidme.web.security.LoginServlet;
+import ua.auction.bidme.web.security.SecurityFilter;
+import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.servlets.LotServlet;
 
 import javax.servlet.DispatcherType;
@@ -38,7 +39,6 @@ import static java.lang.Integer.valueOf;
 import static javax.servlet.DispatcherType.REQUEST;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
 import static org.slf4j.LoggerFactory.getLogger;
-
 
 public class Main {
     private static Logger logger = getLogger(Main.class);
@@ -53,7 +53,8 @@ public class Main {
         MessageDao messageDao = new JdbcMessageDao(dataSource);
 
         //services
-        LotService lotService = new DefaultLotService(lotDao);
+        BidListener bidListener = new BidListener(messageDao);
+        LotService lotService = new DefaultLotService(lotDao, bidListener);
         MessageService messageService = new DefaultMessageService(messageDao);
         UserService userService = new DefaultUserService(userDao, messageService);
         LoggedUserStorage storage = new LoggedUserStorage();
@@ -98,14 +99,12 @@ public class Main {
         config.setMaximumPoolSize(valueOf(properties.getProperty("maxActive")));
         config.addDataSourceProperty("sslmode", properties.getProperty("sslmode"));
 
-
         return new HikariDataSource(config);
     }
 
     private static void startServer(ServletContextHandler context) throws Exception {
         logger.info("starting server ...");
         int port = Optional.ofNullable(System.getenv("PORT")).map(Integer::valueOf).orElse(8080);
-
         Server server = new Server(port);
         server.setHandler(context);
         server.start();

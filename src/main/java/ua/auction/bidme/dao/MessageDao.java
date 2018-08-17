@@ -8,4 +8,5 @@ public interface MessageDao {
 
     List<Message> getAll(int userId);
 
+    void add(Message message);
 }

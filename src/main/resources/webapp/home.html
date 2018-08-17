@@ -111,9 +111,10 @@
             <a href="/" class="navbar-brand mx-auto d-block text-center order-0 order-md-1 w-25"><H1>bit me</H1></a>
             <div class="navbar-collapse collapse dual-nav w-50 order-2">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" th:if=${login}><a href="/logout">Log out</a></li>
+                    <li class="nav-item" th:if=${user}><a href="/logout">Log out</a></li>
+                    <li class="nav-item" th:if=${user}><a th:href="@{'/user?id='+${user.id}}" th:text="${user.email}"></a></li>
 
-                    <li class="nav-item" th:unless=${login}>
+                    <li class="nav-item" th:unless=${user}>
                         <a href="/login">login</a>
                     </li>
                 </ul>
@@ -146,7 +147,7 @@
 <!--Footer-->
 <footer class="panel-footer">
     <div style="text-align: center;" class="container">
-        <span>Made by BidMeInc 2018</span><br>
+        <span>Made by BidMeInc 2018 папа</span><br>
     </div>
 </footer>
 <!--End of footer-->

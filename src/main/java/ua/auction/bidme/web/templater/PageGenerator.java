@@ -23,6 +23,7 @@ public class PageGenerator {
     private PageGenerator() {
         templateEngine = new TemplateEngine();
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("/webapp/");
         templateResolver.setSuffix(".html");

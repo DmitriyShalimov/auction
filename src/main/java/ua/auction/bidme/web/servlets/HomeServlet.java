@@ -3,6 +3,7 @@ package ua.auction.bidme.web.servlets;
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.entity.Lot;
 import ua.auction.bidme.entity.LotStatus;
+import ua.auction.bidme.entity.User;
 import ua.auction.bidme.filter.LotFilter;
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
@@ -33,6 +34,7 @@ public class HomeServlet extends HttpServlet {
         LotFilter lotFilter = new LotFilter();
         String status = request.getParameter("status");
         String parameterPage = request.getParameter("page");
+        User user = storage.getLoggedUser(request.getSession().getId());
         int page;
         if (parameterPage == null) {
             page = 1;
@@ -47,14 +49,14 @@ public class HomeServlet extends HttpServlet {
         lotFilter.setLotPerPage(6);
         List<Lot> list = lotService.getAll(lotFilter);
         int pageCount = lotService.getPageCount(lotFilter);
-
+        pageVariables.put("user", user);
         pageVariables.put("lots", list);
         pageVariables.put("CurrentPage", page);
         pageVariables.put("pageCount", pageCount);
 
         context.setVariables(pageVariables);
-        response.getWriter().println(PageGenerator.instance().getPage(context, "home"));
         response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(PageGenerator.instance().getPage(context, "home"));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }

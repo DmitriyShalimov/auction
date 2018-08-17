@@ -1,7 +1,6 @@
 package ua.auction.bidme.dao.jdbc.mapper.implementation;
 
 import ua.auction.bidme.dao.jdbc.mapper.RowMapper;
-import ua.auction.bidme.entity.Lot;
 import ua.auction.bidme.entity.Message;
 import ua.auction.bidme.entity.SuccessIndicator;
 
@@ -17,19 +16,11 @@ public class MessageMapper implements RowMapper<Message> {
         String text = resultSet.getString("text");
         SuccessIndicator indicator = getById(resultSet.getString("status"));
         LocalDateTime dateTime = resultSet.getTimestamp(("date")).toLocalDateTime();
+        int lotId = resultSet.getInt("lotId");
         return new Message.Builder(text)
                 .indicator(indicator)
                 .dateTime(dateTime)
-                .lot(getLot(resultSet))
+                .lotId(lotId)
                 .build();
-    }
-
-    private Lot getLot(ResultSet resultSet) throws SQLException {
-        int lotId = resultSet.getInt("lotId");
-        String lotTitle = resultSet.getString("lotTitle");
-        Lot lot = new Lot();
-        lot.setId(lotId);
-        lot.setTitle(lotTitle);
-        return lot;
     }
 }

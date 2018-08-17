@@ -18,7 +18,6 @@ class AuthenticationServiceTest {
 
         UserService userService = mock(UserService.class)
         LoggedUserStorage storage = new LoggedUserStorage()
-        BCrypt crypt = mock(BCrypt.class)
 
         User user = generateUser()
         AuthenticationService service = new AuthenticationService(userService, storage)
