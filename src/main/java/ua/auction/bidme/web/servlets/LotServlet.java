@@ -27,12 +27,14 @@ public class LotServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
         Map<String, Object> pageVariables = new HashMap<>();
+        User user = storage.getLoggedUser(request.getSession().getId());
         String id = request.getParameter("id");
         Lot lot = lotService.get(Integer.parseInt(id));
+        pageVariables.put("user", user);
         pageVariables.put("lot", lot);
         context.setVariables(pageVariables);
-        response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));
         response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
@@ -52,6 +54,7 @@ public class LotServlet extends HttpServlet {
             pageVariables.put("result", "Your bid did not pass");
         }
         Lot lot = lotService.get(id);
+        pageVariables.put("user", user);
         pageVariables.put("lot", lot);
         context.setVariables(pageVariables);
         response.setContentType("text/html;charset=utf-8");

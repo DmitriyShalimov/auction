@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SecurityFilter implements Filter {
-    private LoggedUserStorage storage;
+    private final LoggedUserStorage storage;
 
     public SecurityFilter(LoggedUserStorage storage) {
         this.storage = storage;

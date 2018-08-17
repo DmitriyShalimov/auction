@@ -19,14 +19,14 @@ import java.util.Map;
 
 public class HomeServlet extends HttpServlet {
     private final LoggedUserStorage storage;
-    private LotService lotService;
+    private final LotService lotService;
 
     public HomeServlet(LotService lotService, LoggedUserStorage storage) {
         this.storage = storage;
         this.lotService = lotService;
     }
 
-    //todo [getAll] fix encoding
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
