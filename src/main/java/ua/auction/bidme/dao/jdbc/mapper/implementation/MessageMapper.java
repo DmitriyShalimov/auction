@@ -16,7 +16,7 @@ public class MessageMapper implements RowMapper<Message> {
         String text = resultSet.getString("text");
         SuccessIndicator indicator = getById(resultSet.getString("status"));
         LocalDateTime dateTime = resultSet.getTimestamp(("date")).toLocalDateTime();
-        int lotId = resultSet.getInt("lot_id");
+        int lotId = resultSet.getInt("lotId");
         return new Message.Builder(text)
                 .indicator(indicator)
                 .dateTime(dateTime)

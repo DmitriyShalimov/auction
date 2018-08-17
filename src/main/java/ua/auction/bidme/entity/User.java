@@ -6,13 +6,11 @@ public class User {
     private final int id;
     private final String email;
     private final String password;
-    /*private final List<Message> messages;*/
 
     private User(Builder builder) {
         this.id = builder.id;
         this.email = builder.email;
         this.password = builder.password;
-        /* this.messages = builder.messages;*/
     }
 
     public int getId() {
@@ -26,10 +24,6 @@ public class User {
     public String getPassword() {
         return password;
     }
-
-    /*public List<Message> getMessages() {
-        return new ArrayList<>(this.messages);
-    }*/
 
 
     @Override

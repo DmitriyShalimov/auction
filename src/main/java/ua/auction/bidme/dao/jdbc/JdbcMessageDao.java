@@ -17,9 +17,8 @@ public class JdbcMessageDao implements MessageDao {
 
     private final Logger logger = getLogger(getClass());
     private final MessageMapper MESSAGE_MAPPER = new MessageMapper();
-    private final String GET_MESSAGES_BY_USER_ID_SQL = "SELECT m.id, m.text, m.status, m.date, l.id as lot_id" +
-            " FROM auction.message as m " +
-            "INNER JOIN auction.lot as l on (m.lotId = l.id)  WHERE m.userId = ?";
+    private final String GET_MESSAGES_BY_USER_ID_SQL = "SELECT m.id, m.text, m.status, m.date, m.lotId FROM auction.message as m " +
+            "WHERE m.userId  = ?";
     private final String ADD_NEW_MESSAGE_SQL = "INSERT INTO auction.message (text, status, date, lotid, userid) VALUES (?,?,?,?,?)";
     private final DataSource dataSource;
 
