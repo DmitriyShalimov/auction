@@ -22,6 +22,15 @@ public class LoggedUserStorage {
         return storage.put(sessionId, user) != null;
     }
 
+    public boolean isLogged(String sesionId){
+        return storage.containsKey(sesionId);
+    }
+
+    public void logOut(String sessionId){
+        User user = storage.remove(sessionId);
+        logger.info("removing user {} from user storage ", user.getEmail());
+    }
+
     public User getLoggedUser(String sessionId) {
         return storage.get(sessionId);
     }

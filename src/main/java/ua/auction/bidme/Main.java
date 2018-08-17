@@ -24,7 +24,8 @@ import ua.auction.bidme.service.security.LoggedUserStorage;
 import ua.auction.bidme.util.PropertyReader;
 import ua.auction.bidme.web.security.SecurityFilter;
 import ua.auction.bidme.web.servlets.HomeServlet;
-import ua.auction.bidme.web.servlets.LoginServlet;
+import ua.auction.bidme.web.security.LogOutServlet;
+import ua.auction.bidme.web.security.LoginServlet;
 import ua.auction.bidme.web.servlets.LotServlet;
 
 import javax.servlet.DispatcherType;
@@ -34,6 +35,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 import static java.lang.Integer.valueOf;
+import static javax.servlet.DispatcherType.REQUEST;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -62,17 +64,23 @@ public class Main {
 
         //servlets
 
-        context.addServlet(new ServletHolder(new HomeServlet(lotService, storage)), "/auction");
-        context.addServlet(new ServletHolder(new LotServlet(lotService, storage)), "/lot");
-        context.addServlet(new ServletHolder(new LoginServlet(authenticationService)), "/login");
+        registerServlets(lotService, storage, authenticationService, context);
 
         //security
-        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);
+        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(REQUEST);
         SecurityFilter securityFilter = new SecurityFilter(storage);
         context.addFilter(new FilterHolder(securityFilter), "/lot", dispatcherTypes);
+        context.addFilter(new FilterHolder(securityFilter), "/logout", dispatcherTypes);
 
         //server config
         startServer(context);
+    }
+
+    private static void registerServlets(LotService lotService, LoggedUserStorage storage, AuthenticationService authenticationService, ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new HomeServlet(lotService, storage)), "/");
+        context.addServlet(new ServletHolder(new LotServlet(lotService, storage)), "/lot");
+        context.addServlet(new ServletHolder(new LoginServlet(authenticationService, storage)), "/login");
+        context.addServlet(new ServletHolder(new LogOutServlet(storage)), "/logout");
     }
 
     private static HikariDataSource getDataSource() {

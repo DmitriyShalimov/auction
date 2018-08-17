@@ -18,10 +18,10 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        if (storage.getLoggedUser(httpServletRequest.getSession().getId()) != null) {
+        if (storage.isLogged(httpServletRequest.getSession().getId())) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            httpServletResponse.sendRedirect("/auction");
+            httpServletResponse.sendRedirect("/");
         }
     }
 
