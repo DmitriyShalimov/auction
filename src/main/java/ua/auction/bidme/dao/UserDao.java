@@ -6,4 +6,5 @@ public interface UserDao {
 
     User get(String email);
 
+    User get(int id);
 }

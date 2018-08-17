@@ -6,6 +6,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import ua.auction.bidme.dao.UserDao
 import ua.auction.bidme.dao.jdbc.mapper.implementation.UserMapper
+import ua.auction.bidme.dao.jdbc.mapper.implementation.UserMapperBase
 import ua.auction.bidme.entity.User
 
 import javax.sql.DataSource
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.*
 @PrepareForTest([DriverManager.class, JdbcUserDao.class])
 class JdbcUserDaoTest {
 
-    private final String GET_USER_SQL = "SELECT u.id, u.email, u.password from auction.user as u WHERE u.email = ?;";
+    private final String GET_USER_BY_EMAIL_SQL = "SELECT u.id, u.email, u.password from auction.user as u WHERE u.email = ?;";
+    private final String GET_USER_BY_ID_SQL = "SELECT u.email, u.password from auction.user as u WHERE u.id = ?;";
 
     @Test
     void testGetUserByEmail() {
@@ -35,7 +37,7 @@ class JdbcUserDaoTest {
 
         //when
         when(dataSource.getConnection()).thenReturn(connection)
-        when(connection.prepareStatement(GET_USER_SQL)).thenReturn(statement)
+        when(connection.prepareStatement(GET_USER_BY_EMAIL_SQL)).thenReturn(statement)
         doNothing().when(statement).setString(isA(Integer.class), isA(String.class))
         when(statement.executeQuery()).thenReturn(resultSet)
         when(resultSet.next()).thenReturn(true).thenReturn(false)
@@ -47,11 +49,34 @@ class JdbcUserDaoTest {
 
         //then
         assertNotNull(actual)
-
-
     }
 
-    private User generateUser() {
+    @Test
+    void testGetUserById() {
+        //prepare
+        Connection connection = mock(Connection.class)
+        DataSource dataSource = mock(DataSource.class)
+        PreparedStatement statement = mock(PreparedStatement.class)
+        ResultSet resultSet = mock(ResultSet.class)
+        UserMapperBase userMapper = mock(UserMapperBase.class)
+
+        //when
+        when(dataSource.getConnection()).thenReturn(connection)
+        when(connection.prepareStatement(GET_USER_BY_ID_SQL)).thenReturn(statement)
+        doNothing().when(statement).setInt(isA(Integer.class), isA(Integer.class))
+        when(statement.executeQuery()).thenReturn(resultSet)
+        when(resultSet.next()).thenReturn(true).thenReturn(false)
+        User user = generateUser()
+        when(userMapper.mapRow(resultSet)).thenReturn(user)
+
+        UserDao userDao = new JdbcUserDao(dataSource)
+        User actual = userDao.get(1)
+
+        //then
+        assertNotNull(actual)
+    }
+
+    private static User generateUser() {
         new User.Builder("email").password("pass").id(1).build()
     }
 

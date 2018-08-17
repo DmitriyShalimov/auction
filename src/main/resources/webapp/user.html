@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>user</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
           integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
@@ -41,26 +41,17 @@
         </div>
     </nav>
 </header>
-<!--login form -->
-<div class="row justify-content-center">
-    <div class="login-form col-lg-4 col-md-6 col-sm-1">
-    <form class="form" action="/login" method="post">
-        <div class="row justify-content-center">
-            <input type="email" name="email" id="email" placeholder="Email" maxlength="30" required pattern=".+\@.+\..+">
-        </div>
+<!--message area-->
 
-        <div class="row justify-content-center">
-            <input type="password" name="password" id="reg-password" placeholder="Password" required>
+<div class="container" th:each="message : ${userData.messages}">
+    <div class="row justify-content-center">
+        <div class="col border border-dark">
+            <span th:if="${message.indicator.name() == SUCCESS}" class="glyphicon glyphicon-thumbs-up"></span>
+            <span th:unless="${message.indicator.name() == FAIL}" class="glyphicon glyphicon-thumbs-down"></span>
+            <h3 th:text="${message.text}"></h3>
         </div>
-
-        <div class="row justify-content-center">
-            <input type="submit" class="button-log" value="Log In">
-        </div>
-    </form>
+    </div>
 </div>
-</div>
-
-<!--end login form-->
 
 <!--Footer-->
 <footer class="panel-footer">

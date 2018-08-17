@@ -23,9 +23,8 @@ import static ua.auction.bidme.entity.SuccessIndicator.SUCCESS
 @RunWith(PowerMockRunner.class)
 @PrepareForTest([DriverManager.class, JdbcMessageDao.class])
 class JdbcMessageDaoTest {
-    private final String GET_MESSAGE_SQL = "SELECT m.id, m.text, m.status, m.date, m.lotId" +
-            "FROM auction.message as m  WHERE m.userId = ?"
-
+    private final String GET_MESSAGES_BY_USER_ID_SQL = "SELECT m.id, m.text, m.status, m.date, m.lotId FROM auction.message as m " +
+            "WHERE m.userId  = ?";
     @Test
     void testGetAllByUserId() {
         Connection connection = mock(Connection.class)
@@ -39,7 +38,7 @@ class JdbcMessageDaoTest {
 
         //when
         when(dataSource.getConnection()).thenReturn(connection)
-        when(connection.prepareStatement(GET_MESSAGE_SQL)).thenReturn(statement)
+        when(connection.prepareStatement(GET_MESSAGES_BY_USER_ID_SQL)).thenReturn(statement)
         doNothing().when(statement).setString(isA(Integer.class), isA(String.class))
         when(statement.executeQuery()).thenReturn(resultSet)
         when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false)

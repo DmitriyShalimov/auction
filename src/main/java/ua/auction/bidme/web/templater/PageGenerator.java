@@ -9,6 +9,16 @@ public class PageGenerator {
     private static PageGenerator pageGenerator;
     private final TemplateEngine templateEngine;
 
+    private PageGenerator() {
+        templateEngine = new TemplateEngine();
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setPrefix("/webapp/");
+        templateResolver.setSuffix(".html");
+        templateEngine.setTemplateResolver(templateResolver);
+    }
+
     public static PageGenerator instance() {
         if (pageGenerator == null) {
             pageGenerator = new PageGenerator();
@@ -18,15 +28,5 @@ public class PageGenerator {
 
     public String getPage(WebContext context, String name) {
         return templateEngine.process(name, context);
-    }
-
-    private PageGenerator() {
-        templateEngine = new TemplateEngine();
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setPrefix("/webapp/");
-        templateResolver.setSuffix(".html");
-        templateEngine.setTemplateResolver(templateResolver);
     }
 }

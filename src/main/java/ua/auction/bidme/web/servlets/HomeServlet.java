@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public class HomeServlet extends HttpServlet {
-    private LotService lotService;
     private final LoggedUserStorage storage;
+    private LotService lotService;
 
     public HomeServlet(LotService lotService, LoggedUserStorage storage) {
         this.storage = storage;
