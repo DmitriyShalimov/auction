@@ -13,6 +13,7 @@ import ua.auction.bidme.dao.UserDao;
 import ua.auction.bidme.dao.jdbc.JdbcLotDao;
 import ua.auction.bidme.dao.jdbc.JdbcMessageDao;
 import ua.auction.bidme.dao.jdbc.JdbcUserDao;
+import ua.auction.bidme.service.listener.BidListener;
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.MessageService;
 import ua.auction.bidme.service.UserService;
@@ -53,11 +54,13 @@ public class Main {
         MessageDao messageDao = new JdbcMessageDao(dataSource);
 
         //services
-        LotService lotService = new DefaultLotService(lotDao);
+        BidListener bidListener = new BidListener(messageDao);
+        LotService lotService = new DefaultLotService(lotDao, bidListener);
         MessageService messageService = new DefaultMessageService(messageDao);
         UserService userService = new DefaultUserService(userDao, messageService);
         LoggedUserStorage storage = new LoggedUserStorage();
         AuthenticationService authenticationService = new AuthenticationService(userService, storage);
+
 
         //register servlets
         ServletContextHandler context = new ServletContextHandler(SESSIONS);
@@ -105,7 +108,6 @@ public class Main {
     private static void startServer(ServletContextHandler context) throws Exception {
         logger.info("starting server ...");
         int port = Optional.ofNullable(System.getenv("PORT")).map(Integer::valueOf).orElse(8080);
-
         Server server = new Server(port);
         server.setHandler(context);
         server.start();

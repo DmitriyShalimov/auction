@@ -1,6 +1,7 @@
 package ua.auction.bidme.service;
 
 import ua.auction.bidme.entity.Lot;
+import ua.auction.bidme.entity.User;
 import ua.auction.bidme.filter.LotFilter;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface LotService {
 
     Lot get(int id);
 
-    boolean makeBid(int lotId, int price,int userId);
+    boolean makeBid(int lotId, int price,User user);
 }

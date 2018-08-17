@@ -2,7 +2,9 @@ package ua.auction.bidme.service.impl;
 
 import ua.auction.bidme.dao.LotDao;
 import ua.auction.bidme.entity.Lot;
+import ua.auction.bidme.entity.User;
 import ua.auction.bidme.filter.LotFilter;
+import ua.auction.bidme.service.listener.BidListener;
 import ua.auction.bidme.service.LotService;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 public class DefaultLotService implements LotService {
 
     private final LotDao lotDao;
+    private final BidListener bidListener;
 
-    public DefaultLotService(LotDao lotDao) {
+    public DefaultLotService(LotDao lotDao, BidListener bidListener) {
         this.lotDao = lotDao;
+        this.bidListener = bidListener;
     }
 
     @Override
@@ -31,8 +35,12 @@ public class DefaultLotService implements LotService {
     }
 
     @Override
-    public boolean makeBid(int lotId, int price, int userId) {
-        return lotDao.makeBid(lotId, price, userId);
+    public boolean makeBid(int lotId, int price, User user) {
+        boolean result = lotDao.makeBid(lotId, price, user.getId());
+        if (result) {
+            bidListener.notify(lotId, user);
+        }
+        return result;
     }
 
 }

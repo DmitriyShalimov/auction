@@ -23,9 +23,8 @@ import static ua.auction.bidme.entity.SuccessIndicator.SUCCESS
 @RunWith(PowerMockRunner.class)
 @PrepareForTest([DriverManager.class, JdbcMessageDao.class])
 class JdbcMessageDaoTest {
-    private final String GET_MESSAGE_SQL = "SELECT m.id, m.text, m.status, m.date, l.id, l.name" +
-            "FROM auction.message as m " +
-            "INNER JOIN auction.lot as l on (m.lotId = l.id)  WHERE m.userId = ?";
+    private final String GET_MESSAGE_SQL = "SELECT m.id, m.text, m.status, m.date, m.lotId" +
+            "FROM auction.message as m  WHERE m.userId = ?"
 
     @Test
     void testGetAllByUserId() {

@@ -2,6 +2,7 @@ package ua.auction.bidme.web.servlets;
 
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.entity.Lot;
+import ua.auction.bidme.entity.User;
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
 import ua.auction.bidme.web.templater.PageGenerator;
@@ -39,16 +40,18 @@ public class LotServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
         Map<String, Object> pageVariables = new HashMap<>();
-        String lotId = request.getParameter("id");
-        String price = request.getParameter("price");
-        int userId = storage.getLoggedUser(request.getSession().getId()).getId();
-        boolean result = lotService.makeBid(Integer.parseInt(lotId), Integer.parseInt(price), userId);
+        Lot tempLot = new Lot();
+        int id = Integer.parseInt(request.getParameter("id"));
+        int price = Integer.parseInt(request.getParameter("price"));
+        tempLot.setId(id);
+        User user = storage.getLoggedUser(request.getSession().getId());
+        boolean result = lotService.makeBid(id, price, user);
         if (result) {
             pageVariables.put("result", "Your bid is high");
         } else {
             pageVariables.put("result", "Your bid did not pass");
         }
-        Lot lot = lotService.get(Integer.parseInt(lotId));
+        Lot lot = lotService.get(id);
         pageVariables.put("lot", lot);
         context.setVariables(pageVariables);
         response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));

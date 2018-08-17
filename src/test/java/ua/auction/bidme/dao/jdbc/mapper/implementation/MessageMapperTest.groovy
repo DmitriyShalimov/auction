@@ -25,8 +25,7 @@ class MessageMapperTest {
         when(resultSet.getString("text")).thenReturn("message text")
         when(resultSet.getString("status")).thenReturn("S")
         when(resultSet.getTimestamp("date")).thenReturn(valueOf(dateTime))
-        when(resultSet.getString("lotTitle")).thenReturn("title");
-        when(resultSet.getInt("lotId")).thenReturn(1);
+        when(resultSet.getInt("lotId")).thenReturn(1)
 
         //when
 
@@ -37,8 +36,6 @@ class MessageMapperTest {
         assertEquals("message text", message.getText())
         assertEquals(SUCCESS, message.getIndicator())
         assertEquals(dateTime, message.getDateTime())
-        assertNotNull(message.getLot())
-        assertEquals(1, message.getLot().getId())
-        assertEquals("title", message.getLot().getTitle())
+        assertEquals(1, message.getLotId())
     }
 }
