@@ -25,7 +25,7 @@ class MessageMapperTest {
         when(resultSet.getString("text")).thenReturn("message text")
         when(resultSet.getString("status")).thenReturn("S")
         when(resultSet.getTimestamp("date")).thenReturn(valueOf(dateTime))
-        when(resultSet.getInt("lotId")).thenReturn(1)
+        when(resultSet.getInt("lot_id")).thenReturn(1)
 
         //when
 

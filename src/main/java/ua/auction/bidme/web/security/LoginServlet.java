@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext(), req.getLocale());
-        if (storage.isLogged(context.getSession().getId())) {
+        if (storage.isLogged(req.getSession().getId())) {
             resp.setStatus(SC_METHOD_NOT_ALLOWED);
             return;
         }

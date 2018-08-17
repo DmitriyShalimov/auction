@@ -28,6 +28,7 @@ import ua.auction.bidme.web.security.LoginServlet;
 import ua.auction.bidme.web.security.SecurityFilter;
 import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.servlets.LotServlet;
+import ua.auction.bidme.web.servlets.UserServlet;
 
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
@@ -57,6 +58,7 @@ public class Main {
         LotService lotService = new DefaultLotService(lotDao, bidListener);
         MessageService messageService = new DefaultMessageService(messageDao);
         UserService userService = new DefaultUserService(userDao, messageService);
+
         LoggedUserStorage storage = new LoggedUserStorage();
         AuthenticationService authenticationService = new AuthenticationService(userService, storage);
 
@@ -64,24 +66,31 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(SESSIONS);
 
         //servlets
-
-        registerServlets(lotService, storage, authenticationService, context);
+        registerServlets(lotService, storage, authenticationService, context, userService);
 
         //security
-        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(REQUEST);
-        SecurityFilter securityFilter = new SecurityFilter(storage);
-        context.addFilter(new FilterHolder(securityFilter), "/lot", dispatcherTypes);
-        context.addFilter(new FilterHolder(securityFilter), "/logout", dispatcherTypes);
+        addSecurityFilterToContext(storage, context);
 
         //server config
         startServer(context);
     }
 
-    private static void registerServlets(LotService lotService, LoggedUserStorage storage, AuthenticationService authenticationService, ServletContextHandler context) {
+    private static void addSecurityFilterToContext(LoggedUserStorage storage, ServletContextHandler context) {
+        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(REQUEST);
+        SecurityFilter securityFilter = new SecurityFilter(storage);
+        context.addFilter(new FilterHolder(securityFilter), "/lot", dispatcherTypes);
+        context.addFilter(new FilterHolder(securityFilter), "/logout", dispatcherTypes);
+        context.addFilter(new FilterHolder(securityFilter), "/user", dispatcherTypes);
+    }
+
+    private static void registerServlets(LotService lotService, LoggedUserStorage storage,
+                                         AuthenticationService authenticationService,
+                                         ServletContextHandler context, UserService userService) {
         context.addServlet(new ServletHolder(new HomeServlet(lotService, storage)), "/");
         context.addServlet(new ServletHolder(new LotServlet(lotService, storage)), "/lot");
         context.addServlet(new ServletHolder(new LoginServlet(authenticationService, storage)), "/login");
         context.addServlet(new ServletHolder(new LogOutServlet(storage)), "/logout");
+        context.addServlet(new ServletHolder(new UserServlet(userService)), "/user");
     }
 
     private static HikariDataSource getDataSource() {

@@ -20,14 +20,15 @@ public class BidListener {
 
     public void notify(int lotId, User user) {
         User secondBidUser = bidLeader.get(String.valueOf(lotId));
-        if(secondBidUser!=null){
-        messageDao.add(createNewMessage(lotId, secondBidUser.getId(), "F"));}
+        if (secondBidUser != null) {
+            messageDao.add(createNewMessage(lotId, secondBidUser.getId(), "F"));
+        }
         messageDao.add(createNewMessage(lotId, user.getId(), "S"));
         bidLeader.put(String.valueOf(lotId), user);
     }
 
     private Message createNewMessage(int lotId, int userId, String indicator) {
-        return new Message.Builder("A bid was placed on the lot with id"+lotId)
+        return new Message.Builder("A bid was placed on the lot with id" + lotId)
                 .indicator(getById(indicator))
                 .dateTime(LocalDateTime.now())
                 .userId(userId)

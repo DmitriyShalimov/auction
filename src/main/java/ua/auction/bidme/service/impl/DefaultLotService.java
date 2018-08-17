@@ -4,8 +4,8 @@ import ua.auction.bidme.dao.LotDao;
 import ua.auction.bidme.entity.Lot;
 import ua.auction.bidme.entity.User;
 import ua.auction.bidme.filter.LotFilter;
-import ua.auction.bidme.service.listener.BidListener;
 import ua.auction.bidme.service.LotService;
+import ua.auction.bidme.service.listener.BidListener;
 
 import java.util.List;
 
