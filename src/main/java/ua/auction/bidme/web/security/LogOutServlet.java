@@ -21,7 +21,7 @@ public class LogOutServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String sessionId = req.getSession().getId();
         logger.info("logout user with session id {}", sessionId);
         storage.logOut(sessionId);

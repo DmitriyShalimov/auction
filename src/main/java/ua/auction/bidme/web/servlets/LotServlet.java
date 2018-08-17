@@ -54,8 +54,8 @@ public class LotServlet extends HttpServlet {
         Lot lot = lotService.get(id);
         pageVariables.put("lot", lot);
         context.setVariables(pageVariables);
-        response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));
         response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }

@@ -13,20 +13,20 @@ import ua.auction.bidme.dao.UserDao;
 import ua.auction.bidme.dao.jdbc.JdbcLotDao;
 import ua.auction.bidme.dao.jdbc.JdbcMessageDao;
 import ua.auction.bidme.dao.jdbc.JdbcUserDao;
-import ua.auction.bidme.service.listener.BidListener;
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.MessageService;
 import ua.auction.bidme.service.UserService;
 import ua.auction.bidme.service.impl.DefaultLotService;
 import ua.auction.bidme.service.impl.DefaultMessageService;
 import ua.auction.bidme.service.impl.DefaultUserService;
+import ua.auction.bidme.service.listener.BidListener;
 import ua.auction.bidme.service.security.AuthenticationService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
 import ua.auction.bidme.util.PropertyReader;
-import ua.auction.bidme.web.security.SecurityFilter;
-import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.security.LogOutServlet;
 import ua.auction.bidme.web.security.LoginServlet;
+import ua.auction.bidme.web.security.SecurityFilter;
+import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.servlets.LotServlet;
 
 import javax.servlet.DispatcherType;
@@ -39,7 +39,6 @@ import static java.lang.Integer.valueOf;
 import static javax.servlet.DispatcherType.REQUEST;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
 import static org.slf4j.LoggerFactory.getLogger;
-
 
 public class Main {
     private static Logger logger = getLogger(Main.class);
@@ -60,7 +59,6 @@ public class Main {
         UserService userService = new DefaultUserService(userDao, messageService);
         LoggedUserStorage storage = new LoggedUserStorage();
         AuthenticationService authenticationService = new AuthenticationService(userService, storage);
-
 
         //register servlets
         ServletContextHandler context = new ServletContextHandler(SESSIONS);
@@ -100,7 +98,6 @@ public class Main {
         config.setMinimumIdle(valueOf(properties.getProperty("minIdle")));
         config.setMaximumPoolSize(valueOf(properties.getProperty("maxActive")));
         config.addDataSourceProperty("sslmode", properties.getProperty("sslmode"));
-
 
         return new HikariDataSource(config);
     }

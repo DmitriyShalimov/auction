@@ -33,8 +33,8 @@ public class LoginServlet extends HttpServlet {
             resp.setStatus(SC_METHOD_NOT_ALLOWED);
             return;
         }
-        resp.getWriter().println(instance().getPage(context, "login"));
         resp.setContentType("text/html;charset=utf-8");
+        resp.getWriter().println(instance().getPage(context, "login"));
         resp.setStatus(SC_OK);
     }
 
