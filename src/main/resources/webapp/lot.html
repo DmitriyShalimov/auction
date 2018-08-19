@@ -87,6 +87,16 @@
             left: 0;
         }
 
+        #navigation, #bid-button{
+
+            margin-left: 50%;
+        }
+
+        #description {
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
         /*Footer*/
         .panel-footer {
             margin-top: 30px;
@@ -94,6 +104,7 @@
             padding-bottom: 30px;
             background-color: #222;
             border-top: 0;
+            text-align: center;
         }
 
     </style>
@@ -111,11 +122,9 @@
             <a href="/" class="navbar-brand mx-auto d-block text-center order-0 order-md-1 w-25"><H1>bit me</H1></a>
             <div class="navbar-collapse collapse dual-nav w-50 order-2">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" th:if=${login}><a href="/logout">Log out</a></li>
-
-                    <li class="nav-item" th:unless=${login}>
-                        <a href="/login">login</a>
-                    </li>
+                    <li class="nav-item"><a href="/logout">Log out</a></li>
+                    <li class="nav-item"><a th:href="@{'/user?id='+${user.id}}"
+                                            th:text="${user.email}"></a></li>
                 </ul>
             </div>
         </div>
@@ -124,23 +133,26 @@
 <!--main-content-->
 
 <section class=" row">
+    <H1 style="margin-left: 30%" id="title" th:text=${lot.title}></H1><br>
+    <div style="margin-left: 30%" class="lot-tile">
+        <div th:text="${lot.status}"></div>
+        <img width="400" height="300" th:src=${lot.image}>
 
-        <div class="lot-tile">
-            <div th:text="${lot.status}"></div>
-            <img width="400" height="300" th:src=${lot.image}>
-            <span th:text=${lot.title}>title</span>
-            <span th:text=${lot.currentPrice}></span>
+        <span th:if="${lot.currentPrice} > 0" th:text=${lot.currentPrice}></span>
+        <span th:if="${lot.currentPrice} == 0" th:text=${lot.startPrice}></span>
 
-        </div>
+    </div>
+    <H5 id="description" th:text=${lot.description}></H5>
 
 </section>
 
-<form action="/lot" method="post">
-    <input type="text" hidden th:value="${lot.currentPrice}" name="price" id="price">
+<form id="bid-button" action="/lot" method="post">
+    <input type="text" hidden th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}" name="price"
+           id="price">
     <input type="text" hidden th:value="${lot.id}" name="id" id="id">
     <button type="submit">BID ME</button>
 </form>
-<H1 th:if=${result}  th:text=${result}></H1>
+<H1 th:if=${result} th:text=${result}></H1>
 
 </div><!-- End of #main-content -->
 

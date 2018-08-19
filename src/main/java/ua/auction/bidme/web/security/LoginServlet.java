@@ -53,6 +53,7 @@ public class LoginServlet extends HttpServlet {
             setOkAndRedirectToHome(resp, email);
         } else {
             logger.warn("invalid user data for email {}, unnavble to login", email);
+            resp.sendRedirect("/login");
             resp.setStatus(SC_UNAUTHORIZED);
         }
     }

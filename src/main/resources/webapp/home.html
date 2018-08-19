@@ -87,6 +87,11 @@
             left: 0;
         }
 
+        #navigation,#bid-button  {
+
+           margin-left: 50%;
+        }
+
         /*Footer*/
         .panel-footer {
             margin-top: 30px;
@@ -94,6 +99,7 @@
             padding-bottom: 30px;
             background-color: #222;
             border-top: 0;
+            text-align: center;
         }
 
     </style>
@@ -112,7 +118,8 @@
             <div class="navbar-collapse collapse dual-nav w-50 order-2">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item" th:if=${user}><a href="/logout">Log out</a></li>
-                    <li class="nav-item" th:if=${user}><a th:href="@{'/user?id='+${user.id}}" th:text="${user.email}"></a></li>
+                    <li class="nav-item" th:if=${user}><a th:href="@{'/user?id='+${user.id}}"
+                                                          th:text="${user.email}"></a></li>
 
                     <li class="nav-item" th:unless=${user}>
                         <a href="/login">login</a>
@@ -123,31 +130,34 @@
     </nav>
 </header>
 <!--main-content-->
-<div id="main-content" class="container">
-    <input id="status" type="checkbox" name="status" th:checked="${active}">Show only active<br>
-</div>
-<section class=" row">
-    <div class="col-lg-4 col-md-6 col-sm-12  " th:each="lot : ${lots}">
-        <div class="lot-tile">
-            <div th:text="${lot.status}"></div>
-           <a th:href="@{'/lot?id='+${lot.id}}"><img width="400" height="300" th:src=${lot.image}></a>
-            <span th:text=${lot.title}>title</span>
-
-        </div>
+<div>
+    <div id="main-content" class="container">
+        <input id="status" type="checkbox" name="status" th:checked="${active}">Show only active<br>
     </div>
-</section>
+    <section class=" row">
+        <div class="col-lg-4 col-md-6 col-sm-12  " th:each="lot : ${lots}">
+            <div class="lot-tile">
+                <div th:text="${lot.status}"></div>
+                <a th:href="@{'/lot?id='+${lot.id}}"><img width="400" height="300" th:src=${lot.image}></a>
+                <span th:text=${lot.title}>title</span>
 
-<nav aria-label="Page navigation">
+            </div>
+        </div>
+    </section>
+
+
+</div><!-- End of #main-content -->
+<nav id="navigation" aria-label="Page navigation">
     <ul class="pagination">
-        <li th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item"><a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
+        <li th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item"><a class="page-link"
+                                                                                      th:href="@{'/auction?page='+${page}}"
+                                                                                      th:text="${page}"></a></li>
     </ul>
 </nav>
-</div><!-- End of #main-content -->
-
 <!--Footer-->
 <footer class="panel-footer">
-    <div style="text-align: center;" class="container">
-        <span>Made by BidMeInc 2018 папа</span><br>
+    <div class="container">
+        <span>Made by BidMeInc 2018</span><br>
     </div>
 </footer>
 <!--End of footer-->
