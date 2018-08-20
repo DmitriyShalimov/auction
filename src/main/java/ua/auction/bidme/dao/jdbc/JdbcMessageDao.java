@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import ua.auction.bidme.dao.MessageDao;
 import ua.auction.bidme.dao.jdbc.mapper.implementation.MessageMapper;
 import ua.auction.bidme.entity.Message;
-import ua.auction.bidme.util.PropertyReader;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -16,14 +15,16 @@ import static java.lang.System.currentTimeMillis;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class JdbcMessageDao implements MessageDao {
-
     private final Logger logger = getLogger(getClass());
     private final MessageMapper MESSAGE_MAPPER = new MessageMapper();
-    private final Properties properties = new PropertyReader("properties/query.properties").readProperties();
     private final DataSource dataSource;
+    private final String GET_MESSAGES_BY_USER_ID_SQL;
+    private final String ADD_NEW_MESSAGE_SQL;
 
-    public JdbcMessageDao(DataSource dataSource) {
+    public JdbcMessageDao(DataSource dataSource, Properties queryProperties) {
         this.dataSource = dataSource;
+        this.GET_MESSAGES_BY_USER_ID_SQL = queryProperties.getProperty("GET_MESSAGES_BY_USER_ID_SQL");
+        this.ADD_NEW_MESSAGE_SQL = queryProperties.getProperty("ADD_NEW_MESSAGE_SQL");
     }
 
     @Override
@@ -31,9 +32,8 @@ public class JdbcMessageDao implements MessageDao {
         logger.info("starting query getMessagesByUserId {} started ...");
         List<Message> messages = new ArrayList<>();
         long start = currentTimeMillis();
-
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(properties.getProperty("GET_MESSAGES_BY_USER_ID_SQL"))) {
+             PreparedStatement statement = connection.prepareStatement(GET_MESSAGES_BY_USER_ID_SQL)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -55,7 +55,7 @@ public class JdbcMessageDao implements MessageDao {
         logger.info("Start of the new product's upload to the database");
         long start = currentTimeMillis();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(properties.getProperty("ADD_NEW_MESSAGE_SQL"))) {
+             PreparedStatement preparedStatement = connection.prepareStatement(ADD_NEW_MESSAGE_SQL)) {
             preparedStatement.setString(1, message.getText());
             preparedStatement.setString(2, message.getIndicator().getId());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(message.getDateTime()));

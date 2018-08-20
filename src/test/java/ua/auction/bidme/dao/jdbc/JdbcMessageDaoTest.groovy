@@ -7,6 +7,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 import ua.auction.bidme.dao.MessageDao
 import ua.auction.bidme.dao.jdbc.mapper.implementation.MessageMapper
 import ua.auction.bidme.entity.Message
+import ua.auction.bidme.util.PropertyReader
 
 import javax.sql.DataSource
 import java.sql.*
@@ -23,8 +24,9 @@ import static ua.auction.bidme.entity.SuccessIndicator.SUCCESS
 @RunWith(PowerMockRunner.class)
 @PrepareForTest([DriverManager.class, JdbcMessageDao.class])
 class JdbcMessageDaoTest {
-    private final String GET_MESSAGES_BY_USER_ID_SQL = "SELECT m.id, m.text, m.status, m.date, m.lotId FROM auction.message as m " +
-            "WHERE m.userId  = ?";
+    private Properties queryProperties = new PropertyReader("properties/query.properties").readProperties()
+    private String GET_MESSAGES_BY_USER_ID_SQL = queryProperties.getProperty("GET_MESSAGES_BY_USER_ID_SQL")
+
     @Test
     void testGetAllByUserId() {
         Connection connection = mock(Connection.class)
@@ -47,7 +49,7 @@ class JdbcMessageDaoTest {
         when(timestamp.toLocalDateTime()).thenReturn(now).thenReturn(now).thenReturn(now)
         when(mapper.mapRow(resultSet)).thenReturn(messages.get(0)).thenReturn(messages.get(1)).thenReturn(messages.get(2))
 
-        MessageDao messageDao = new JdbcMessageDao(dataSource)
+        MessageDao messageDao = new JdbcMessageDao(dataSource, queryProperties)
         //then
         List<Message> actual = messageDao.getAll(1)
 
