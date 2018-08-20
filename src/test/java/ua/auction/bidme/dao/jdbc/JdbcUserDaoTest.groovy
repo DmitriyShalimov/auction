@@ -8,6 +8,7 @@ import ua.auction.bidme.dao.UserDao
 import ua.auction.bidme.dao.jdbc.mapper.implementation.UserMapper
 import ua.auction.bidme.dao.jdbc.mapper.implementation.UserMapperBase
 import ua.auction.bidme.entity.User
+import ua.auction.bidme.util.PropertyReader
 
 import javax.sql.DataSource
 import java.sql.Connection
@@ -22,9 +23,9 @@ import static org.mockito.Mockito.*
 @RunWith(PowerMockRunner.class)
 @PrepareForTest([DriverManager.class, JdbcUserDao.class])
 class JdbcUserDaoTest {
-
-    private final String GET_USER_BY_EMAIL_SQL = "SELECT u.id, u.email, u.password from auction.user as u WHERE u.email = ?;";
-    private final String GET_USER_BY_ID_SQL = "SELECT u.email, u.password from auction.user as u WHERE u.id = ?;";
+    private Properties queryProperties = new PropertyReader("properties/query.properties").readProperties()
+    private final String GET_USER_BY_EMAIL_SQL = queryProperties.getProperty("GET_USER_BY_EMAIL_SQL")
+    private final String GET_USER_BY_ID_SQL = queryProperties.getProperty("GET_USER_BY_ID_SQL")
 
     @Test
     void testGetUserByEmail() {
@@ -44,7 +45,7 @@ class JdbcUserDaoTest {
         User user = generateUser()
         when(userMapper.mapRow(resultSet)).thenReturn(user)
 
-        UserDao userDao = new JdbcUserDao(dataSource)
+        UserDao userDao = new JdbcUserDao(dataSource,queryProperties)
         User actual = userDao.get("email")
 
         //then
@@ -69,7 +70,7 @@ class JdbcUserDaoTest {
         User user = generateUser()
         when(userMapper.mapRow(resultSet)).thenReturn(user)
 
-        UserDao userDao = new JdbcUserDao(dataSource)
+        UserDao userDao = new JdbcUserDao(dataSource,queryProperties)
         User actual = userDao.get(1)
 
         //then

@@ -6,7 +6,6 @@ import ua.auction.bidme.dao.jdbc.mapper.implementation.LotRowMapper;
 import ua.auction.bidme.dao.util.QueryGenerator;
 import ua.auction.bidme.entity.Lot;
 import ua.auction.bidme.filter.LotFilter;
-import ua.auction.bidme.util.PropertyReader;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -20,12 +19,19 @@ import static ua.auction.bidme.dao.util.QueryGenerator.where;
 
 public class JdbcLotDao implements LotDao {
     private static final LotRowMapper LOT_ROW_MAPPER = new LotRowMapper();
-    private final Properties properties = new PropertyReader("properties/query.properties").readProperties();
     private final DataSource dataSource;
     private final Logger logger = getLogger(getClass());
+    private final String GET_ALL_LOTS_SQL;
+    private final String GET_LOTS_COUNT;
+    private final String GET_LOTS_BY_ID_SQL;
+    private final String UPDATE_LOT_SQL;
 
-    public JdbcLotDao(DataSource dataSource) {
+    public JdbcLotDao(DataSource dataSource, Properties queryProperties) {
         this.dataSource = dataSource;
+        this.GET_ALL_LOTS_SQL = queryProperties.getProperty("GET_ALL_LOTS_SQL");
+        this.GET_LOTS_COUNT = queryProperties.getProperty("GET_LOTS_COUNT");
+        this.GET_LOTS_BY_ID_SQL = queryProperties.getProperty("GET_LOTS_BY_ID_SQL");
+        this.UPDATE_LOT_SQL = queryProperties.getProperty("UPDATE_LOT_SQL");
     }
 
     public List<Lot> getAll(LotFilter lotFilter) {
@@ -40,8 +46,7 @@ public class JdbcLotDao implements LotDao {
             while (resultSet.next()) {
                 lots.add(LOT_ROW_MAPPER.mapRow(resultSet));
             }
-            logger.info("query getAllLots from db finished. {} lots returned. it took {} ms",
-                    lots.size(), currentTimeMillis() - start);
+            logger.info("query getAllLots from db finished. {} lots returned. it took {} ms", lots.size(), currentTimeMillis() - start);
             return lots;
         } catch (SQLException e) {
             logger.error("an error {} occurred during getAllLots from db", e.getMessage());
@@ -52,8 +57,8 @@ public class JdbcLotDao implements LotDao {
     @Override
     public int getPageCount(LotFilter lotFilter) {
         logger.info("starting query getLotsCount to db ...");
-
-        StringBuilder query = new StringBuilder(properties.getProperty("GET_LOTS_COUNT"));
+        long start = currentTimeMillis();
+        StringBuilder query = new StringBuilder(GET_LOTS_COUNT);
         if (lotFilter.getLotStatus() != null) {
             query = where(query, "status", lotFilter.getLotStatus().getId(), true);
         }
@@ -62,7 +67,7 @@ public class JdbcLotDao implements LotDao {
              ResultSet resultSet = statement.executeQuery(query.toString())) {
             resultSet.next();
             int lotCount = resultSet.getInt("rowcount");
-            logger.info("starting query getLotsCount to finished. count {}", lotCount);
+            logger.info("starting query getLotsCount to finished. count {}. It  took {} ms", lotCount, currentTimeMillis() - start);
             return (int) Math.ceil(lotCount * 1.0 / lotFilter.getLotPerPage());
         } catch (SQLException e) {
             logger.error("an error {} occurred during getLotsCount", e);
@@ -72,7 +77,7 @@ public class JdbcLotDao implements LotDao {
 
 
     private StringBuilder generateQuery(LotFilter lotFilter) {
-        StringBuilder query = new StringBuilder(properties.getProperty("GET_ALL_LOTS_SQL"));
+        StringBuilder query = new StringBuilder(GET_ALL_LOTS_SQL);
         if (lotFilter.getLotStatus() != null) {
             query = where(query, "status", lotFilter.getLotStatus().getId(), true);
         }
@@ -81,19 +86,17 @@ public class JdbcLotDao implements LotDao {
         return query;
     }
 
-
     @Override
     public Lot get(int id) {
         logger.info("starting query getLot to db ...");
         long start = currentTimeMillis();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(properties.getProperty("GET_LOTS_BY_ID_SQL"))) {
+             PreparedStatement statement = connection.prepareStatement(GET_LOTS_BY_ID_SQL)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             Lot lot = LOT_ROW_MAPPER.mapRow(resultSet);
-            logger.info("query getLot from db finished. lot {}. It  took {} ms",
-                    lot, currentTimeMillis() - start);
+            logger.info("query getLot from db finished. lot {}. It  took {} ms", lot, currentTimeMillis() - start);
             return lot;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -105,14 +108,13 @@ public class JdbcLotDao implements LotDao {
         logger.info("starting query updateLot to db ...");
         long start = currentTimeMillis();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(properties.getProperty("UPDATE_LOT_SQL"))) {
+             PreparedStatement statement = connection.prepareStatement(UPDATE_LOT_SQL)) {
             statement.setInt(1, (int) (price * 1.1));
             statement.setInt(2, userId);
             statement.setInt(3, lotId);
             statement.setInt(4, price);
             int result = statement.executeUpdate();
-            logger.info("query updateLot from db finished. lotId {}. It  took {} ms", lotId,
-                    currentTimeMillis() - start);
+            logger.info("query updateLot from db finished. lotId {}. It  took {} ms", lotId, currentTimeMillis() - start);
             return result == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);

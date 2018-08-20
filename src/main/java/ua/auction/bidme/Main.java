@@ -49,9 +49,10 @@ public class Main {
         DataSource dataSource = getDataSource();
 
         //dao
-        LotDao lotDao = new JdbcLotDao(dataSource);
-        UserDao userDao = new JdbcUserDao(dataSource);
-        MessageDao messageDao = new JdbcMessageDao(dataSource);
+        Properties queryProperties = new PropertyReader("properties/query.properties").readProperties();
+        LotDao lotDao = new JdbcLotDao(dataSource,queryProperties);
+        UserDao userDao = new JdbcUserDao(dataSource,queryProperties);
+        MessageDao messageDao = new JdbcMessageDao(dataSource,queryProperties);
 
         //services
         BidListener bidListener = new BidListener(messageDao);
