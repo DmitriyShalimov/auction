@@ -2,6 +2,7 @@ package ua.auction.bidme.web.servlets;
 
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.entity.Lot;
+import ua.auction.bidme.entity.LotStatus;
 import ua.auction.bidme.entity.User;
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.security.LoggedUserStorage;
@@ -32,6 +33,9 @@ public class LotServlet extends HttpServlet {
         Lot lot = lotService.get(Integer.parseInt(id));
         pageVariables.put("user", user);
         pageVariables.put("lot", lot);
+        if (lot.getStatus().equals(LotStatus.ACTIVE)) {
+            pageVariables.put("active", true);
+        }
         context.setVariables(pageVariables);
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));
