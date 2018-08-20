@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import ua.auction.bidme.dao.MessageDao;
 import ua.auction.bidme.dao.jdbc.mapper.implementation.MessageMapper;
 import ua.auction.bidme.entity.Message;
+import ua.auction.bidme.util.PropertyReader;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static java.lang.System.currentTimeMillis;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -17,9 +19,7 @@ public class JdbcMessageDao implements MessageDao {
 
     private final Logger logger = getLogger(getClass());
     private final MessageMapper MESSAGE_MAPPER = new MessageMapper();
-    private final String GET_MESSAGES_BY_USER_ID_SQL = "SELECT m.id, m.text, m.status, m.date, m.lotId FROM auction.message as m " +
-            "WHERE m.userId  = ?";
-    private final String ADD_NEW_MESSAGE_SQL = "INSERT INTO auction.message (text, status, date, lotid, userid) VALUES (?,?,?,?,?)";
+    private final Properties properties = new PropertyReader("properties/query.properties").readProperties();
     private final DataSource dataSource;
 
     public JdbcMessageDao(DataSource dataSource) {
@@ -33,7 +33,7 @@ public class JdbcMessageDao implements MessageDao {
         long start = currentTimeMillis();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_MESSAGES_BY_USER_ID_SQL)) {
+             PreparedStatement statement = connection.prepareStatement(properties.getProperty("GET_MESSAGES_BY_USER_ID_SQL"))) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -55,7 +55,7 @@ public class JdbcMessageDao implements MessageDao {
         logger.info("Start of the new product's upload to the database");
         long start = currentTimeMillis();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(ADD_NEW_MESSAGE_SQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(properties.getProperty("ADD_NEW_MESSAGE_SQL"))) {
             preparedStatement.setString(1, message.getText());
             preparedStatement.setString(2, message.getIndicator().getId());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(message.getDateTime()));
