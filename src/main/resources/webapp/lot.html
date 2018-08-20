@@ -146,7 +146,7 @@
 
 </section>
 
-<form id="bid-button" action="/lot" method="post">
+<form th:if="${active}" id="bid-button" action="/lot" method="post">
     <input type="text" hidden th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}" name="price"
            id="price">
     <input type="text" hidden th:value="${lot.id}" name="id" id="id">
