@@ -52,19 +52,18 @@ public class DefaultLotService implements LotService {
     }
 
     private void updateLot(Lot lot) {
-//        if (lot.getStatus().equals(LotStatus.WAITING)) {
-//            if (LocalDateTime.now().isBefore(lot.getStartTime())) {
-//                lot.setStatus(LotStatus.ACTIVE);
-//                lot.setCurrentPrice(lot.getStartPrice());
-//            }
-//        }else{
-//            if (lot.getStatus().equals(LotStatus.ACTIVE)) {
-//                if (LocalDateTime.now().isBefore(lot.getStartTime())) {
-//                    lot.setStatus(LotStatus.FINISHED);
-//                    bidListener.notifyViner();
-//                }
-    //    }
-
+        if (lot.getStatus().equals(LotStatus.WAITING)) {
+            if (LocalDateTime.now().isBefore(lot.getStartTime())) {
+                lot.setStatus(LotStatus.ACTIVE);
+                lot.setCurrentPrice(lot.getStartPrice());
+            }
+        } else {
+            if (lot.getStatus().equals(LotStatus.ACTIVE)) {
+                if (LocalDateTime.now().isBefore(lot.getEndTime())) {
+                    lot.setStatus(LotStatus.FINISHED);
+                    bidListener.notifyWinner(lot);
+                }
+            }
+        }
     }
-
 }
