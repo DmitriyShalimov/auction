@@ -2,12 +2,14 @@ package ua.auction.bidme.service.impl;
 
 import ua.auction.bidme.dao.LotDao;
 import ua.auction.bidme.entity.Lot;
+import ua.auction.bidme.entity.LotStatus;
 import ua.auction.bidme.entity.User;
 import ua.auction.bidme.filter.LotFilter;
 import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.listener.BidListener;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class DefaultLotService implements LotService {
 
@@ -21,7 +23,11 @@ public class DefaultLotService implements LotService {
 
     @Override
     public List<Lot> getAll(LotFilter lotFilter) {
-        return lotDao.getAll(lotFilter);
+        List<Lot> lots = lotDao.getAll(lotFilter);
+        for (Lot lot : lots) {
+            updateLot(lot);
+        }
+        return lots;
     }
 
     @Override
@@ -31,7 +37,9 @@ public class DefaultLotService implements LotService {
 
     @Override
     public Lot get(int id) {
-        return lotDao.get(id);
+        Lot lot = lotDao.get(id);
+        updateLot(lot);
+        return lot;
     }
 
     @Override
@@ -41,6 +49,22 @@ public class DefaultLotService implements LotService {
             bidListener.notify(lotId, user);
         }
         return result;
+    }
+
+    private void updateLot(Lot lot) {
+//        if (lot.getStatus().equals(LotStatus.WAITING)) {
+//            if (LocalDateTime.now().isBefore(lot.getStartTime())) {
+//                lot.setStatus(LotStatus.ACTIVE);
+//                lot.setCurrentPrice(lot.getStartPrice());
+//            }
+//        }else{
+//            if (lot.getStatus().equals(LotStatus.ACTIVE)) {
+//                if (LocalDateTime.now().isBefore(lot.getStartTime())) {
+//                    lot.setStatus(LotStatus.FINISHED);
+//                    bidListener.notifyViner();
+//                }
+    //    }
+
     }
 
 }
