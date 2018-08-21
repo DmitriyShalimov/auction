@@ -25,6 +25,7 @@ public class JdbcLotDao implements LotDao {
     private final String GET_LOTS_COUNT;
     private final String GET_LOTS_BY_ID_SQL;
     private final String UPDATE_LOT_SQL;
+    private final String MAKE_BID_SQL;
 
     public JdbcLotDao(DataSource dataSource, Properties queryProperties) {
         this.dataSource = dataSource;
@@ -32,6 +33,7 @@ public class JdbcLotDao implements LotDao {
         this.GET_LOTS_COUNT = queryProperties.getProperty("GET_LOTS_COUNT");
         this.GET_LOTS_BY_ID_SQL = queryProperties.getProperty("GET_LOTS_BY_ID_SQL");
         this.UPDATE_LOT_SQL = queryProperties.getProperty("UPDATE_LOT_SQL");
+        this.MAKE_BID_SQL = queryProperties.getProperty("MAKE_BID_SQL");
     }
 
     public List<Lot> getAll(LotFilter lotFilter) {
@@ -105,16 +107,33 @@ public class JdbcLotDao implements LotDao {
 
     @Override
     public boolean makeBid(int lotId, int price, int userId) {
-        logger.info("starting query updateLot to db ...");
+        logger.info("starting query makeBid to db ...");
         long start = currentTimeMillis();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_LOT_SQL)) {
+             PreparedStatement statement = connection.prepareStatement(MAKE_BID_SQL)) {
             statement.setInt(1, (int) (price * 1.1));
             statement.setInt(2, userId);
             statement.setInt(3, lotId);
             statement.setInt(4, price);
             int result = statement.executeUpdate();
-            logger.info("query updateLot from db finished. lotId {}. It  took {} ms", lotId, currentTimeMillis() - start);
+            logger.info("query makeBid from db finished. lotId {}. It  took {} ms", lotId, currentTimeMillis() - start);
+            return result == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean update(Lot lot) {
+        logger.info("starting query updateLot to db ...");
+        long start = currentTimeMillis();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_LOT_SQL)) {
+            statement.setInt(1, lot.getCurrentPrice());
+            statement.setString(2, lot.getStatus().getId());
+            statement.setInt(3, lot.getId());
+            int result = statement.executeUpdate();
+            logger.info("query updateLot from db finished. lotId {}. It  took {} ms", lot.getId(), currentTimeMillis() - start);
             return result == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
