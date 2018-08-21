@@ -1,8 +1,8 @@
 package ua.auction.bidme.web.servlets;
 
+import org.slf4j.Logger;
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.entity.Lot;
-import ua.auction.bidme.entity.LotStatus;
 import ua.auction.bidme.entity.User;
 import ua.auction.bidme.filter.LotFilter;
 import ua.auction.bidme.service.LotService;
@@ -16,8 +16,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static java.lang.Integer.parseInt;
+import static org.slf4j.LoggerFactory.getLogger;
+import static ua.auction.bidme.entity.LotStatus.getTypeById;
 
 public class HomeServlet extends HttpServlet {
+    private static final int LOTS_PER_PAGE = 6;
+    private final Logger logger = getLogger(getClass());
     private final LoggedUserStorage storage;
     private final LotService lotService;
 
@@ -26,37 +33,37 @@ public class HomeServlet extends HttpServlet {
         this.lotService = lotService;
     }
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        logger.info("get request home page ");
+
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
-        Map<String, Object> pageVariables = new HashMap<>();
+        int page = Optional.ofNullable(request.getParameter("page")).map(Integer::parseInt).orElse(1);
         LotFilter lotFilter = new LotFilter();
-        String status = request.getParameter("status");
-        String parameterPage = request.getParameter("page");
-        User user = storage.getLoggedUser(request.getSession().getId());
-        int page;
-        if (parameterPage == null) {
-            page = 1;
-        } else {
-            page = Integer.parseInt(parameterPage);
-        }
-        if (status != null) {
-            lotFilter.setLotStatus(LotStatus.getTypeById(status));
-            pageVariables.put("active", true);
-        }
         lotFilter.setPage(page);
-        lotFilter.setLotPerPage(6);
+        Map<String, Object> pageVariables = new HashMap<>();
+        Optional.ofNullable(request.getParameter("status")).ifPresent(s -> {
+            lotFilter.setLotStatus(getTypeById(s));
+            pageVariables.put("active", true);
+        });
+        lotFilter.setLotPerPage(LOTS_PER_PAGE);
         List<Lot> list = lotService.getAll(lotFilter);
-        int pageCount = lotService.getPageCount(lotFilter);
+        context.setVariables(fillPageVariables(request, pageVariables, page, list, lotService.getPageCount(lotFilter)));
+        setResponse(response, context);
+    }
+
+    private void setResponse(HttpServletResponse response, WebContext context) throws IOException {
+        response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(PageGenerator.instance().getPage(context, "home"));
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    private Map<String, Object> fillPageVariables(HttpServletRequest request, Map<String, Object> pageVariables, int page, List<Lot> list, int pageCount) {
+        User user = storage.getLoggedUser(request.getSession().getId());
         pageVariables.put("user", user);
         pageVariables.put("lots", list);
         pageVariables.put("CurrentPage", page);
         pageVariables.put("pageCount", pageCount);
-
-        context.setVariables(pageVariables);
-        response.setContentType("text/html;charset=utf-8");
-        response.getWriter().println(PageGenerator.instance().getPage(context, "home"));
-        response.setStatus(HttpServletResponse.SC_OK);
+        return pageVariables;
     }
 }

@@ -1,6 +1,7 @@
 package ua.auction.bidme.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Lot {
     private int id;
@@ -83,6 +84,28 @@ public class Lot {
 
     public void setStatus(LotStatus status) {
         this.status = status;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lot lot = (Lot) o;
+        return id == lot.id &&
+                startPrice == lot.startPrice &&
+                currentPrice == lot.currentPrice &&
+                Objects.equals(title, lot.title) &&
+                Objects.equals(description, lot.description) &&
+                Objects.equals(image, lot.image) &&
+                Objects.equals(startTime, lot.startTime) &&
+                Objects.equals(endTime, lot.endTime) &&
+                status == lot.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, image, startPrice, currentPrice, startTime, endTime, status);
     }
 
     @Override
