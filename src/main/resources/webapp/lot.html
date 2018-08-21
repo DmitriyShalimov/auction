@@ -1,135 +1,8 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="">
-    <title>Bid me</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-    <style type="text/css">
-        body {
-            font-size: 16px;
-            color: #fff;
-            background-color: #C7C7C7;
-        }
-
-        /*Header*/
-        .navbar {
-            background-color: #828282;
-        }
-
-        .navbar-brand {
-            padding-top: 25px;
-        }
-
-        .navbar-toggler {
-            border: 1px solid #DBDBDB;
-        }
-
-        .navbar-brand h1 {
-            color: #DBDBDB;
-            font-size: 2em;
-            text-transform: uppercase;
-            font-weight: bold;
-            text-shadow: 1px 1px 1px #222;
-            margin-top: 0;
-            margin-bottom: 0;
-            line-height: .75;
-        }
-
-        .navbar-brand a:hover, .navbar-brand a:focus {
-            text-decoration: none;
-        }
-
-        .nav-item a {
-            margin-top: 10px;
-            margin-left: 10px;
-            text-align: center;
-            color: #DBDBDB;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
-
-        /*main content*/
-        .lot-tile {
-            position: relative;
-            border: 3px solid #DBDBDB;
-            overflow: hidden;
-            width: 400px;
-            height: 400px;
-            margin: 0 auto 15px;
-        }
-
-        .lot-tile span {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 1.2em;
-            text-transform: uppercase;
-            background-color: #000;
-            color: #fff;
-            opacity: 0.8;
-        }
-
-        .lot-tile:hover {
-            box-shadow: 0 1px 5px 1px #cccccc;
-        }
-
-        .lot-tile div {
-            padding: 0px;
-            position: absolute;
-            text-align: center;
-            background-color: #C7C7C7;
-            width: 80px;
-            left: 0;
-        }
-
-        #navigation, #bid-button{
-
-            margin-left: 50%;
-        }
-
-        #description {
-            margin-right: 30px;
-            margin-left: 30px;
-        }
-
-        /*Footer*/
-        .panel-footer {
-            margin-top: 30px;
-            padding-top: 35px;
-            padding-bottom: 30px;
-            background-color: #222;
-            border-top: 0;
-            text-align: center;
-        }
-
-    </style>
-</head>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head th:insert="head.html :: head"></head>
 <body>
-<header>
-    <nav class="navbar  navbar-expand-md justify-content-between">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse dual-nav w-50 order-1 order-md-0">
-
-            </div>
-            <a href="/" class="navbar-brand mx-auto d-block text-center order-0 order-md-1 w-25"><H1>bit me</H1></a>
-            <div class="navbar-collapse collapse dual-nav w-50 order-2">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item"><a href="/logout">Log out</a></li>
-                    <li class="nav-item"><a th:href="@{'/user?id='+${user.id}}"
-                                            th:text="${user.email}"></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<header th:insert="header.html :: header"></header>
 <!--main-content-->
 
 <section class=" row">
@@ -157,11 +30,7 @@
 </div><!-- End of #main-content -->
 
 <!--Footer-->
-<footer class="panel-footer">
-    <div style="text-align: center;" class="container">
-        <span>Made by BidMeInc 2018</span><br>
-    </div>
-</footer>
+<footer th:insert="footer.html :: footer"></footer>
 <!--End of footer-->
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

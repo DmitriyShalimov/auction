@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<header>
+    <nav class="navbar  navbar-expand-md justify-content-between">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse dual-nav w-50 order-1 order-md-0">
+
+            </div>
+            <a href="/" class="navbar-brand mx-auto d-block text-center order-0 order-md-1 w-25"><H1>bit me</H1></a>
+            <div class="navbar-collapse collapse dual-nav w-50 order-2">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" th:if=${user}><a href="/logout">Log out</a></li>
+                    <li class="nav-item" th:if=${user}><a th:href="@{'/user?id='+${user.id}}"
+                                                          th:text="${user.email}"></a></li>
+                    <li class="nav-item" th:unless=${user}>
+                        <a href="/login">login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+</html>

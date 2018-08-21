@@ -1,7 +1,6 @@
 package ua.auction.bidme.service.security
 
 import org.junit.Test
-import org.mindrot.jbcrypt.BCrypt
 import ua.auction.bidme.entity.User
 import ua.auction.bidme.service.UserService
 

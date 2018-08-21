@@ -1,73 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-            integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-            crossorigin="anonymous"></script>
-</head>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head th:insert="head.html :: head"></head>
 <body>
-
-<header>
-    <nav class="navbar  navbar-expand-md justify-content-between">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse dual-nav w-50 order-1 order-md-0">
-
-            </div>
-            <a href="/" class="navbar-brand mx-auto d-block text-center order-0 order-md-1 w-25"><H1>bit me</H1></a>
-            <div class="navbar-collapse collapse dual-nav w-50 order-2">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" th:if=${user}><a href="/logout">Log out</a></li>
-                    <li class="nav-item" th:if=${user}><a th:href="@{'/user?id='+${user.id}}" th:text="${user.email}"></a></li>
-
-                    <li class="nav-item" th:unless=${user}>
-                        <a href="/login">login</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<header th:insert="header.html :: header"></header>
 <!--login form -->
 <div class="row justify-content-center">
     <div class="login-form col-lg-4 col-md-6 col-sm-1">
-    <form class="form" action="/login" method="post">
-        <div class="row justify-content-center">
-            <input type="email" name="email" id="email" placeholder="Email" maxlength="30" required pattern=".+\@.+\..+">
-        </div>
+        <form class="form" action="/login" method="post">
+            <div class="row justify-content-center">
+                <input type="email" name="email" id="email" placeholder="Email" maxlength="30">
+            </div>
 
-        <div class="row justify-content-center">
-            <input type="password" name="password" id="reg-password" placeholder="Password" required>
-        </div>
+            <div class="row justify-content-center">
+                <input type="password" name="password" id="reg-password" placeholder="Password" required>
+            </div>
 
-        <div class="row justify-content-center">
-            <input type="submit" class="button-log" value="Log In">
-        </div>
-    </form>
-</div>
+            <div class="row justify-content-center">
+                <input type="submit" class="button-log" value="Log In">
+            </div>
+        </form>
+    </div>
 </div>
 
 <!--end login form-->
 
 <!--Footer-->
-<footer class="panel-footer">
-    <div style="text-align: center;" class="container">
-        <span>Made by BidMeInc 2018 папа</span><br>
-    </div>
-</footer>
+<footer th:insert="footer.html :: footer"></footer>
 <!--End of footer-->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+        integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
 </body>
 </html>

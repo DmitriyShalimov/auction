@@ -21,19 +21,20 @@ public class BidListener {
 
     public void notify(int lotId, User user) {
         User secondBidUser = bidLeader.get(String.valueOf(lotId));
-        String text="A bid was placed on the lot with id" + lotId;
+        String text = "A bid was placed on the lot with id" + lotId;
         if (secondBidUser != null) {
-            messageDao.add(createNewMessage(lotId, secondBidUser.getId(), "F",text));
+            messageDao.add(createNewMessage(lotId, secondBidUser.getId(), "F", text));
         }
-        messageDao.add(createNewMessage(lotId, user.getId(), "S",text));
+        messageDao.add(createNewMessage(lotId, user.getId(), "S", text));
         bidLeader.put(String.valueOf(lotId), user);
     }
+
     public void notifyWinner(Lot lot) {
-        String text="You are win lot with id =" + lot.getId();
-        messageDao.add(createNewMessage(lot.getId(), bidLeader.get(String.valueOf(lot.getId())).getId(), "S",text));
+        String text = "You are win lot with id =" + lot.getId();
+        messageDao.add(createNewMessage(lot.getId(), bidLeader.get(String.valueOf(lot.getId())).getId(), "S", text));
     }
 
-    private Message createNewMessage(int lotId, int userId, String indicator,String text) {
+    private Message createNewMessage(int lotId, int userId, String indicator, String text) {
         return new Message.Builder(text)
                 .indicator(getById(indicator))
                 .dateTime(LocalDateTime.now())

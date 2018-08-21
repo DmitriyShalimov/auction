@@ -26,6 +26,7 @@ import ua.auction.bidme.util.PropertyReader;
 import ua.auction.bidme.web.security.LogOutServlet;
 import ua.auction.bidme.web.security.LoginServlet;
 import ua.auction.bidme.web.security.SecurityFilter;
+import ua.auction.bidme.web.servlets.AssetsServlet;
 import ua.auction.bidme.web.servlets.HomeServlet;
 import ua.auction.bidme.web.servlets.LotServlet;
 import ua.auction.bidme.web.servlets.UserServlet;
@@ -50,9 +51,9 @@ public class Main {
 
         //dao
         Properties queryProperties = new PropertyReader("properties/query.properties").readProperties();
-        LotDao lotDao = new JdbcLotDao(dataSource,queryProperties);
-        UserDao userDao = new JdbcUserDao(dataSource,queryProperties);
-        MessageDao messageDao = new JdbcMessageDao(dataSource,queryProperties);
+        LotDao lotDao = new JdbcLotDao(dataSource, queryProperties);
+        UserDao userDao = new JdbcUserDao(dataSource, queryProperties);
+        MessageDao messageDao = new JdbcMessageDao(dataSource, queryProperties);
 
         //services
         BidListener bidListener = new BidListener(messageDao);
@@ -92,6 +93,7 @@ public class Main {
         context.addServlet(new ServletHolder(new LoginServlet(authenticationService, storage)), "/login");
         context.addServlet(new ServletHolder(new LogOutServlet(storage)), "/logout");
         context.addServlet(new ServletHolder(new UserServlet(userService)), "/user");
+        context.addServlet(new ServletHolder(new AssetsServlet()), "/webapp/assets/*");
     }
 
     private static HikariDataSource getDataSource() {
