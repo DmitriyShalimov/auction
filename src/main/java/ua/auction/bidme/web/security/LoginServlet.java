@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        logger.info("get request to login page started");
         WebContext context = new WebContext(req, resp, req.getServletContext(), req.getLocale());
         if (storage.isLogged(req.getSession().getId())) {
             resp.setStatus(SC_METHOD_NOT_ALLOWED);
@@ -40,6 +41,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        logger.info("post request to login page");
         String sessionId = req.getSession().getId();
         if (setNotAllowedIfLogged(sessionId, resp)) {
             return;
@@ -52,7 +54,7 @@ public class LoginServlet extends HttpServlet {
         if (authenticationService.tryAuthenticate(email, password, sessionId)) {
             setOkAndRedirectToHome(resp, email);
         } else {
-            logger.warn("invalid user data for email {}, unnavble to login", email);
+            logger.warn("invalid user data for email {}, unable to login", email);
             resp.sendRedirect("/login");
             resp.setStatus(SC_UNAUTHORIZED);
         }
@@ -66,6 +68,7 @@ public class LoginServlet extends HttpServlet {
 
     private boolean setBadBadRequestIfNonValidParam(String email, String password, HttpServletResponse resp) {
         if (isNullOrEmpty(email) || isNullOrEmpty(password)) {
+            logger.warn("invalid user login params");
             resp.setStatus(SC_BAD_REQUEST);
             return true;
         }
