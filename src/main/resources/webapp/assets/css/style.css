@@ -1,11 +1,14 @@
 body {
     font-size: 16px;
-    color: #fbfbfb;
+    /*  color: #fbfbfb;*/
+    color: #fff;
+    /*   background-color: #C7C7C7;*/
 }
 
 /*Header*/
 .navbar {
     background-color: #222;
+    /*background-color: #828282;*/
 }
 
 .navbar-brand {
@@ -29,6 +32,10 @@ body {
 
 .navbar-brand a:hover, .navbar-brand a:focus {
     text-decoration: none;
+}
+
+#logo {
+    text-align: center;
 }
 
 .nav-item a {
@@ -76,25 +83,20 @@ body {
     left: 0;
 }
 
-/*Footer*/
-.panel-footer {
-    margin-top: 30px;
-    padding-top: 35px;
-    padding-bottom: 30px;
-    background-color: #222;
-    text-decoration-color: #cccccc;
-    border-top: 0;
+#navigation, #bid-button {
+    margin-left: 50%;
+}
+
+#description {
+    margin-right: 30px;
+    margin-left: 30px;
 }
 
 /*login form*/
-
-#logo{
-    text-align: center;
-}
-.name{
+.name {
     text-decoration-color: #cccccc;
-    text-underline-mode: none;
 }
+
 .login-form {
     background-color: #222222;
     margin-bottom: 100px;
@@ -117,4 +119,40 @@ body {
     padding: 0 20px;
     background-color: #C7C7C7;
     text-decoration-color: #3c3f41;
+}
+
+/*user page*/
+/*messages*/
+.messages {
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.message-container {
+    padding: 10px;
+}
+
+.message {
+    background-color: #f3f3f3;
+    padding: 5px 0;
+}
+
+.message h3 {
+    margin-left: 10px;
+    display: inline-block;
+}
+
+/*Footer*/
+.panel-footer {
+    position: fixed;
+    width: 100%;
+    padding-top: 35px;
+    padding-bottom: 30px;
+    background-color: #222;
+    border-top: 0;
+    bottom: 0;
+}
+
+.panel-footer span {
+    color: #cccccc;
 }

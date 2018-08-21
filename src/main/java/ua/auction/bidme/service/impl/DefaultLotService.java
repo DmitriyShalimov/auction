@@ -9,7 +9,9 @@ import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.listener.BidListener;
 
 import java.util.List;
-import java.time.LocalDateTime;
+
+import static java.time.LocalDateTime.now;
+import static ua.auction.bidme.entity.LotStatus.ACTIVE;
 
 public class DefaultLotService implements LotService {
 
@@ -52,17 +54,13 @@ public class DefaultLotService implements LotService {
     }
 
     private void updateLot(Lot lot) {
-        if (lot.getStatus().equals(LotStatus.WAITING)) {
-            if (LocalDateTime.now().isBefore(lot.getStartTime())) {
-                lot.setStatus(LotStatus.ACTIVE);
-                lot.setCurrentPrice(lot.getStartPrice());
-            }
+        if (lot.getStatus().equals(LotStatus.WAITING) && now().isBefore(lot.getStartTime())) {
+            lot.setStatus(ACTIVE);
+            lot.setCurrentPrice(lot.getStartPrice());
         } else {
-            if (lot.getStatus().equals(LotStatus.ACTIVE)) {
-                if (LocalDateTime.now().isBefore(lot.getEndTime())) {
-                    lot.setStatus(LotStatus.FINISHED);
-                    bidListener.notifyWinner(lot);
-                }
+            if (lot.getStatus().equals(ACTIVE) && lot.getEndTime().isBefore(now())) {
+                lot.setStatus(LotStatus.FINISHED);
+                bidListener.notifyWinner(lot);
             }
         }
     }
