@@ -26,8 +26,14 @@ public class DefaultLotService implements LotService {
     @Override
     public List<Lot> getAll(LotFilter lotFilter) {
         List<Lot> lots = lotDao.getAll(lotFilter);
+        boolean isUpdate = false;
         for (Lot lot : lots) {
-            updateLot(lot);
+            if (updateLot(lot)) {
+                isUpdate = true;
+            }
+        }
+        if (isUpdate) {
+            return lotDao.getAll(lotFilter);
         }
         return lots;
     }
@@ -40,7 +46,10 @@ public class DefaultLotService implements LotService {
     @Override
     public Lot get(int id) {
         Lot lot = lotDao.get(id);
-        updateLot(lot);
+        boolean isUpdate = updateLot(lot);
+        if (isUpdate) {
+            return lotDao.get(id);
+        }
         return lot;
     }
 
@@ -53,15 +62,19 @@ public class DefaultLotService implements LotService {
         return result;
     }
 
-    private void updateLot(Lot lot) {
-        if (lot.getStatus().equals(LotStatus.WAITING) && now().isBefore(lot.getStartTime())) {
+    private boolean updateLot(Lot lot) {
+        boolean isUpdated = false;
+        if (lot.getStatus().equals(LotStatus.WAITING) && lot.getStartTime().isBefore(now())) {
             lot.setStatus(ACTIVE);
             lot.setCurrentPrice(lot.getStartPrice());
+            isUpdated = lotDao.update(lot);
         } else {
             if (lot.getStatus().equals(ACTIVE) && lot.getEndTime().isBefore(now())) {
                 lot.setStatus(LotStatus.FINISHED);
                 bidListener.notifyWinner(lot);
+                isUpdated = lotDao.update(lot);
             }
         }
+        return isUpdated;
     }
 }

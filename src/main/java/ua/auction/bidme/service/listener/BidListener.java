@@ -31,7 +31,10 @@ public class BidListener {
 
     public void notifyWinner(Lot lot) {
         String text = "You are win lot with id =" + lot.getId();
-        messageDao.add(createNewMessage(lot.getId(), bidLeader.get(String.valueOf(lot.getId())).getId(), "S", text));
+        User winner = bidLeader.get(String.valueOf(lot.getId()));
+        if (winner != null) {
+            messageDao.add(createNewMessage(lot.getId(), bidLeader.get(String.valueOf(lot.getId())).getId(), "S", text));
+        }
     }
 
     private Message createNewMessage(int lotId, int userId, String indicator, String text) {

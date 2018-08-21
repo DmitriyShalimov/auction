@@ -13,4 +13,6 @@ public interface LotDao {
     Lot get(int id);
 
     boolean makeBid(int lotId, int price, int userId);
+
+    boolean update(Lot lot);
 }
