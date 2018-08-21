@@ -10,8 +10,12 @@ after_succes:
 
 notifications:
   email:
-    recipients:
+    recipient:
       -dmitriyshalimov@gmail.com
-      -chickitosik@gmail.com
     on_success: always
     on_failure: always
+    email:
+      recipient:
+        -chickitosik@gmail.com
+      on_success: always
+      on_failure: always
