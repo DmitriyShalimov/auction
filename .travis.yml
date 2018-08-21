@@ -6,11 +6,12 @@ install: true
 sudo: false
 
 after_succes:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
 
-  notifications:
-    email:
-      recipient:
-        -dmitriyshalimov@gmail.com
-      on_success: always
-      on_failure: always
+notifications:
+  email:
+    recipient:
+      -dmitriyshalimov@gmail.com
+      -chickitosik@gmail.com
+    on_success: always
+    on_failure: always
