@@ -3,6 +3,12 @@ jdk: oraclejdk8
 
 install: true
 
+deploy:
+  provider: heroku
+  api_key: 668d314a-7670-4d79-827f-afbad1f8a313
+  app: auctionbidme
+  run: "mvn clean heroku:deploy"
+
 sudo: false
 
 after_succes:

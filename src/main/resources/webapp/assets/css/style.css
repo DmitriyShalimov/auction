@@ -1,6 +1,7 @@
 body {
     font-size: 16px;
-    /*  color: #fbfbfb;*/
+    width: 100%;
+    display: flex;
     color: #fff;
     /*   background-color: #C7C7C7;*/
 }
@@ -144,7 +145,6 @@ body {
 
 /*Footer*/
 .panel-footer {
-    position: fixed;
     width: 100%;
     padding-top: 35px;
     padding-bottom: 30px;
