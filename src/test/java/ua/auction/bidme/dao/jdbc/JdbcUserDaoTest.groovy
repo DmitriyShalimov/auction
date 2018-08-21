@@ -45,7 +45,7 @@ class JdbcUserDaoTest {
         User user = generateUser()
         when(userMapper.mapRow(resultSet)).thenReturn(user)
 
-        UserDao userDao = new JdbcUserDao(dataSource,queryProperties)
+        UserDao userDao = new JdbcUserDao(dataSource, queryProperties)
         User actual = userDao.get("email")
 
         //then
@@ -70,7 +70,7 @@ class JdbcUserDaoTest {
         User user = generateUser()
         when(userMapper.mapRow(resultSet)).thenReturn(user)
 
-        UserDao userDao = new JdbcUserDao(dataSource,queryProperties)
+        UserDao userDao = new JdbcUserDao(dataSource, queryProperties)
         User actual = userDao.get(1)
 
         //then

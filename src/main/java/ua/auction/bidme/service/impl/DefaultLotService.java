@@ -9,7 +9,9 @@ import ua.auction.bidme.service.LotService;
 import ua.auction.bidme.service.listener.BidListener;
 
 import java.util.List;
-import java.time.LocalDateTime;
+
+import static java.time.LocalDateTime.now;
+import static ua.auction.bidme.entity.LotStatus.ACTIVE;
 
 public class DefaultLotService implements LotService {
 
@@ -24,13 +26,13 @@ public class DefaultLotService implements LotService {
     @Override
     public List<Lot> getAll(LotFilter lotFilter) {
         List<Lot> lots = lotDao.getAll(lotFilter);
-        boolean isUpdate=false;
+        boolean isUpdate = false;
         for (Lot lot : lots) {
-            if(updateLot(lot)){
-                isUpdate=true;
+            if (updateLot(lot)) {
+                isUpdate = true;
             }
         }
-        if(isUpdate){
+        if (isUpdate) {
             return lotDao.getAll(lotFilter);
         }
         return lots;
@@ -44,8 +46,9 @@ public class DefaultLotService implements LotService {
     @Override
     public Lot get(int id) {
         Lot lot = lotDao.get(id);
-        boolean isUpdate = updateLot(lot);if (isUpdate){
-          return  lotDao.get(id);
+        boolean isUpdate = updateLot(lot);
+        if (isUpdate) {
+            return lotDao.get(id);
         }
         return lot;
     }
@@ -61,19 +64,15 @@ public class DefaultLotService implements LotService {
 
     private boolean updateLot(Lot lot) {
         boolean isUpdated = false;
-        if (lot.getStatus().equals(LotStatus.WAITING)) {
-            if (LocalDateTime.now().isAfter(lot.getStartTime())) {
-                lot.setStatus(LotStatus.ACTIVE);
-                lot.setCurrentPrice(lot.getStartPrice());
-                isUpdated = lotDao.update(lot);
-            }
+        if (lot.getStatus().equals(LotStatus.WAITING) && lot.getStartTime().isBefore(now())) {
+            lot.setStatus(ACTIVE);
+            lot.setCurrentPrice(lot.getStartPrice());
+            isUpdated = lotDao.update(lot);
         } else {
-            if (lot.getStatus().equals(LotStatus.ACTIVE)) {
-                if (LocalDateTime.now().isAfter(lot.getEndTime())) {
-                    lot.setStatus(LotStatus.FINISHED);
-                    bidListener.notifyWinner(lot);
-                    isUpdated = lotDao.update(lot);
-                }
+            if (lot.getStatus().equals(ACTIVE) && lot.getEndTime().isBefore(now())) {
+                lot.setStatus(LotStatus.FINISHED);
+                bidListener.notifyWinner(lot);
+                isUpdated = lotDao.update(lot);
             }
         }
         return isUpdated;
