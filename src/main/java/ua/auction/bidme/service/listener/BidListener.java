@@ -19,18 +19,17 @@ public class BidListener {
         this.messageDao = messageDao;
     }
 
-    public void notify(int lotId, User user) {
+    public void notify(int lotId, String lotTitle, User user) {
         User secondBidUser = bidLeader.get(String.valueOf(lotId));
-        String text = "A bid was placed on the lot with id" + lotId;
         if (secondBidUser != null) {
-            messageDao.add(createNewMessage(lotId, secondBidUser.getId(), "F", text));
+            messageDao.add(createNewMessage(lotId, secondBidUser.getId(), "F", "Someone made a higher bid for " + lotTitle));
         }
-        messageDao.add(createNewMessage(lotId, user.getId(), "S", text));
+        messageDao.add(createNewMessage(lotId, user.getId(), "S", "Your bid for " + lotTitle + " are leading now. Congratulations!"));
         bidLeader.put(String.valueOf(lotId), user);
     }
 
     public void notifyWinner(Lot lot) {
-        String text = "You are win lot with id =" + lot.getId();
+        String text = "You are win lot " + lot.getTitle() + ". Congratulations!";
         User winner = bidLeader.get(String.valueOf(lot.getId()));
         if (winner != null) {
             messageDao.add(createNewMessage(lot.getId(), bidLeader.get(String.valueOf(lot.getId())).getId(), "S", text));

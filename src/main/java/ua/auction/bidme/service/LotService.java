@@ -13,5 +13,5 @@ public interface LotService {
 
     Lot get(int id);
 
-    boolean makeBid(int lotId, int price, User user);
+    boolean makeBid(int lotId, String lotTitle, int price, User user);
 }
