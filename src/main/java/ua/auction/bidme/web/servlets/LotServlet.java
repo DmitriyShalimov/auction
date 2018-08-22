@@ -62,7 +62,7 @@ public class LotServlet extends HttpServlet {
         response.getWriter().println(PageGenerator.instance().getPage(context, "lot"));
         response.setStatus(HttpServletResponse.SC_OK);
 
-        logger.info("bit for lot finished. result {}. it took {} ms",
+        logger.info("bid for lot id: {} finished. result {}. it took {}ms",
                 id, pageVariables.get("result"), currentTimeMillis() - start);
     }
 
