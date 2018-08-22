@@ -28,11 +28,10 @@ class JdbcLotDaoTest {
     private String GET_ALL_LOTS_SQL = "SELECT id, name, description, start_price, current_price, start_time,end_time,status, picture_link FROM auction.lot  LIMIT 0 OFFSET 0"
     private String GET_LOTS_COUNT = queryProperties.getProperty("GET_LOTS_COUNT")
     private String GET_LOTS_BY_ID_SQL = queryProperties.getProperty("GET_LOTS_BY_ID_SQL")
-    private String UPDATE_LOT_SQL = queryProperties.getProperty("UPDATE_LOT_SQL")
     private final String MAKE_BID_SQL = queryProperties.getProperty("MAKE_BID_SQL")
 
     @BeforeClass
-    public static void beforeClass() {
+    static void beforeClass() {
         LotRowMapper lotRowMapper = mock(LotRowMapper.class)
         whenNew(LotRowMapper.class).withNoArguments().thenReturn(lotRowMapper)
         Lot lot = new Lot()

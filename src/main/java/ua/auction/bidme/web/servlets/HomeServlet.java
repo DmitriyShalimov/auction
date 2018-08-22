@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.System.currentTimeMillis;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ua.auction.bidme.entity.LotStatus.getTypeById;
 
@@ -35,7 +36,8 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.info("get request home page ");
+        long start = currentTimeMillis();
+        logger.info("starting request home page to get all lots");
 
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
         int page = Optional.ofNullable(request.getParameter("page")).map(Integer::parseInt).orElse(1);
@@ -50,6 +52,7 @@ public class HomeServlet extends HttpServlet {
         List<Lot> list = lotService.getAll(lotFilter);
         context.setVariables(fillPageVariables(request, pageVariables, page, list, lotService.getPageCount(lotFilter)));
         setResponse(response, context);
+        logger.info("logs has been received. amount {}. it took {} ms", list.size(), currentTimeMillis() - start);
     }
 
     private void setResponse(HttpServletResponse response, WebContext context) throws IOException {

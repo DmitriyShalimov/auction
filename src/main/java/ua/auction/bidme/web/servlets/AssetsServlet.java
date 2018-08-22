@@ -2,7 +2,6 @@ package ua.auction.bidme.web.servlets;
 
 import org.slf4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ public class AssetsServlet extends HttpServlet {
     private final Logger logger = getLogger(getClass());
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String fileName = req.getRequestURI();
         logger.info("reading resource {}", fileName);
         try (InputStream resourceAsStream = getStreamResource(fileName)) {
