@@ -53,9 +53,9 @@ public class LotServlet extends HttpServlet {
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
         int id = Integer.parseInt(request.getParameter("id"));
         logger.info("start making bid for lo id: {}", id);
-
+        String lotTitle = request.getParameter("lotTitle");
         int price = Integer.parseInt(request.getParameter("price"));
-        Map<String, Object> pageVariables = fillBidPageVariableInfo(request, id, price);
+        Map<String, Object> pageVariables = fillBidPageVariableInfo(request,lotTitle, id, price);
 
         context.setVariables(pageVariables);
         response.setContentType("text/html;charset=utf-8");
@@ -66,10 +66,10 @@ public class LotServlet extends HttpServlet {
                 id, pageVariables.get("result"), currentTimeMillis() - start);
     }
 
-    private Map<String, Object> fillBidPageVariableInfo(HttpServletRequest request, int id, int price) {
+    private Map<String, Object> fillBidPageVariableInfo(HttpServletRequest request,String lotTitle, int id, int price) {
         Map<String, Object> pageVariables = new HashMap<>();
         User user = storage.getLoggedUser(request.getSession().getId());
-        pageVariables.put("result", lotService.makeBid(id, price, user) ? SUCCESS : FAIL);
+        pageVariables.put("result", lotService.makeBid(id,lotTitle, price, user) ? SUCCESS : FAIL);
         Lot lot = lotService.get(id);
         pageVariables.put("user", user);
         pageVariables.put("lot", lot);
