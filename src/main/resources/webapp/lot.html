@@ -21,6 +21,7 @@
         <input type="text" hidden th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}" name="price"
                id="price">
         <input type="text" hidden th:value="${lot.id}" name="id" id="id">
+        <input type="text" hidden th:value="${lot.title}" name="lotTitle" id="lotTitle">
         <button type="submit">BID ME</button>
     </form>
     <H1 th:if=${result} th:text=${result}></H1>
