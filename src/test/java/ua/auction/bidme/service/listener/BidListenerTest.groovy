@@ -18,7 +18,7 @@ class BidListenerTest {
 
         //when
         BidListener bidListener = new BidListener(messageDao)
-        bidListener.notify(1, user)
+        bidListener.notify(1,"title", user)
 
         //then
         verify(messageDao, times(1)).add(any(Message.class))
