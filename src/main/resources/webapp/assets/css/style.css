@@ -140,12 +140,18 @@ body {
 .message-container {
     padding: 10px;
 }
-
 .message {
     background-color: #f3f3f3;
     padding: 5px 0;
+    display: inline-flex;
 }
-
+.left{
+    float: left;
+}
+.right{
+    margin-left: 15px;
+    float: right;
+}
 .message h3 {
     margin-left: 10px;
     display: inline-block;

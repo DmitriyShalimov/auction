@@ -11,6 +11,7 @@
     <properties>
         <groovy-all.version>2.4.4</groovy-all.version>
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
+        <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
         <jetty-webapp.version>9.4.7.RC0</jetty-webapp.version>
         <jetty-server.version>9.4.8.v20171121</jetty-server.version>
         <jbcrypt.version>0.3m</jbcrypt.version>
@@ -122,6 +123,12 @@
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <version>${thymeleaf-extras-java8time.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
