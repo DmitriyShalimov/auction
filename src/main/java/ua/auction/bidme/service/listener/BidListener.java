@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ua.auction.bidme.entity.SuccessIndicator.SUCCESS;
 import static ua.auction.bidme.entity.SuccessIndicator.getById;
 
 public class BidListener {
@@ -28,7 +29,7 @@ public class BidListener {
         if (secondBidUser != null) {
             messageDao.add(createNewMessage(lotId, secondBidUser.getId(), SuccessIndicator.FAIL.getId(), String.format(LOWER_BID_MESSAGE, lotTitle)));
         }
-        messageDao.add(createNewMessage(lotId, user.getId(), SuccessIndicator.SUCCESS.getId(), String.format(HIGHER_BID_MESSAGE, lotTitle)));
+        messageDao.add(createNewMessage(lotId, user.getId(), SUCCESS.getId(), String.format(HIGHER_BID_MESSAGE, lotTitle)));
         bidLeader.put(lotId, user);
     }
 
@@ -36,7 +37,7 @@ public class BidListener {
         String text = String.format(WIN_MESSAGE, lot.getTitle());
         User winner = bidLeader.get(lot.getId());
         if (winner != null) {
-            messageDao.add(createNewMessage(lot.getId(), bidLeader.get(lot.getId()).getId(), SuccessIndicator.SUCCESS.getId(), text));
+            messageDao.add(createNewMessage(lot.getId(), bidLeader.get(lot.getId()).getId(), SUCCESS.getId(), text));
         }
     }
 

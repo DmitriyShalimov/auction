@@ -8,10 +8,10 @@
     <div class="container" th:each="message : ${userData.messages}">
         <div class="row justify-content-center message-container">
             <div class="col border border-dark message">
-                <span th:if="${message.indicator.name() == SUCCESS}" class="icon">
+                <span th:if="${message.indicator.id }== S" class="icon">
                     <img class="manImg" src="/webapp/assets/img/glyphicons-344-thumbs-up.png"/>
                 </span>
-                <span th:unless="${message.indicator.name() == SUCCESS}" class="icon">
+                <span th:unless="${message.indicator.id}== S" class="icon">
                     <img class="manImg" src="/webapp/assets/img/glyphicons-345-thumbs-down.png"/>
                 </span>
                 <h3 th:text="${message.text}"></h3>
