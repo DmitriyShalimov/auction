@@ -47,6 +47,12 @@ body {
 }
 
 /*main content*/
+#status {
+    padding: 15px;
+    font-size: 1.4em;
+    margin-right: 40%;
+    margin-left: 60%;
+}
 .lot-tile {
     position: relative;
     border: 3px solid #DBDBDB;
@@ -89,6 +95,10 @@ body {
 #description {
     margin-right: 30px;
     margin-left: 30px;
+}
+#pagination{
+    margin-right: 50%;
+    margin-left: 50%;
 }
 
 /*login form*/
