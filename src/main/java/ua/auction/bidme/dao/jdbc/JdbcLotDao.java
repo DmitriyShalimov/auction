@@ -133,7 +133,7 @@ public class JdbcLotDao implements LotDao {
             statement.setString(2, lot.getStatus().getId());
             statement.setInt(3, lot.getId());
             int result = statement.executeUpdate();
-            logger.info("query updateLot from db finished. lotId {}. It  took {} ms", lot.getId(), currentTimeMillis() - start);
+            logger.info("query updateLot from db finished. lotId {}. It took {} ms", lot.getId(), currentTimeMillis() - start);
             return result == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);

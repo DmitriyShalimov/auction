@@ -5,7 +5,7 @@
 <header th:insert="header.html :: header"></header>
 <!--main-content-->
 
-<section class=" row">
+<section id="main" class=" row">
     <H1 style="margin-left: 30%" id="title" th:text=${lot.title}></H1><br>
     <div style="margin-left: 30%" class="lot-tile">
         <div th:text="${lot.status}"></div>
@@ -17,15 +17,16 @@
     </div>
     <H5 id="description" th:text=${lot.description}></H5>
 
+    <form th:if="${active}" id="bid-button" action="/lot" method="post">
+        <input type="text" hidden th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}" name="price"
+               id="price">
+        <input type="text" hidden th:value="${lot.id}" name="id" id="id">
+        <button type="submit">BID ME</button>
+    </form>
+    <H1 th:if=${result} th:text=${result}></H1>
 </section>
 
-<form th:if="${active}" id="bid-button" action="/lot" method="post">
-    <input type="text" hidden th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}" name="price"
-           id="price">
-    <input type="text" hidden th:value="${lot.id}" name="id" id="id">
-    <button type="submit">BID ME</button>
-</form>
-<H1 th:if=${result} th:text=${result}></H1>
+
 
 </div><!-- End of #main-content -->
 
