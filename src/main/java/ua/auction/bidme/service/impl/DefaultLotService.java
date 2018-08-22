@@ -54,10 +54,10 @@ public class DefaultLotService implements LotService {
     }
 
     @Override
-    public boolean makeBid(int lotId, int price, User user) {
-        boolean result = lotDao.makeBid(lotId, price, user.getId());
+    public boolean makeBid(int lotId, String lotTitle, int price, User user) {
+        boolean result = lotDao.makeBid(lotId,  price, user.getId());
         if (result) {
-            bidListener.notify(lotId, user);
+            bidListener.notify(lotId,lotTitle, user);
         }
         return result;
     }
