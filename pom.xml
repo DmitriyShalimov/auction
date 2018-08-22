@@ -18,6 +18,7 @@
         <postgresql.version>42.2.2</postgresql.version>
         <HikariCP.version>3.2.0</HikariCP.version>
         <logback-classic.version>1.2.3</logback-classic.version>
+        <jcl-over-slf4j.version>1.7.25</jcl-over-slf4j.version>
         <junit.version>4.12</junit.version>
         <mockito-all.version>1.10.19</mockito-all.version>
         <powermock-module-junit4.version>1.7.4</powermock-module-junit4.version>
@@ -149,6 +150,11 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback-classic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${jcl-over-slf4j.version}</version>
         </dependency>
 
         <!--security-->
