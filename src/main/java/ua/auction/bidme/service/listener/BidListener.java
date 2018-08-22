@@ -9,9 +9,11 @@ import ua.auction.bidme.entity.User;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.lang.String.format;
-import static ua.auction.bidme.entity.SuccessIndicator.*;
+import static ua.auction.bidme.entity.SuccessIndicator.FAIL;
+import static ua.auction.bidme.entity.SuccessIndicator.SUCCESS;
 
 public class BidListener {
     private Map<Integer, User> bidLeader = new HashMap<>();
@@ -34,15 +36,16 @@ public class BidListener {
     }
 
     public void notifyWinner(Lot lot) {
-        String text = format(WIN_MESSAGE, lot.getTitle());
-        User winner = bidLeader.get(lot.getId());
-        if (winner != null) {
-            messageDao.add(createMessage(lot.getId(), bidLeader.get(lot.getId()).getId(), SUCCESS, text));
-        }
+        Optional.ofNullable(bidLeader.get(lot.getId()))
+                .ifPresent(winner -> {
+                    String message = format(WIN_MESSAGE, lot.getTitle());
+                    int userId = winner.getId();
+                    messageDao.add(createMessage(lot.getId(), userId, SUCCESS, message));
+                });
     }
 
-    private Message createMessage(int lotId, int userId, SuccessIndicator indicator, String text) {
-        return new Message.Builder(text)
+    private Message createMessage(int lotId, int userId, SuccessIndicator indicator, String message) {
+        return new Message.Builder(message)
                 .indicator(indicator)
                 .dateTime(LocalDateTime.now())
                 .userId(userId)

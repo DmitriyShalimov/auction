@@ -9,11 +9,11 @@
         <div class="row justify-content-center message-container">
             <div class="col border border-dark message">
                 <div class="left align-self-center">
-                <span th:if="${message.indicator.name() == SUCCESS}" class="icon">
-                    <img class="mesImg" src="/webapp/assets/img/glyphicons-344-thumbs-up.png"/>
+                <span th:if="${message.indicator.name()}== SUCCESS" class="icon">
+                    <img class="message-status" src="/webapp/assets/img/glyphicons-344-thumbs-up.png"/>
                 </span>
-                    <span th:unless="${message.indicator.name() == SUCCESS}" class="icon">
-                    <img class="mesImg" src="/webapp/assets/img/glyphicons-345-thumbs-down.png"/>
+                <span th:unless="${message.indicator.name()}== SUCCESS" class="icon">
+                    <img class="message-status" src="/webapp/assets/img/glyphicons-345-thumbs-down.png"/>
                 </span>
                 </div>
                 <div class="right">
