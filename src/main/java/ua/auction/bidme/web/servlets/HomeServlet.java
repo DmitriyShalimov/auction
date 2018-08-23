@@ -65,7 +65,7 @@ public class HomeServlet extends HttpServlet {
         User user = storage.getLoggedUser(request.getSession().getId());
         pageVariables.put("user", user);
         pageVariables.put("lots", list);
-        pageVariables.put("CurrentPage", page);
+        pageVariables.put("currentPage", page);
         pageVariables.put("pageCount", pageCount);
         return pageVariables;
     }
