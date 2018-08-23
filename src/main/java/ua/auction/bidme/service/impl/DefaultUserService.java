@@ -7,6 +7,7 @@ import ua.auction.bidme.entity.UserData;
 import ua.auction.bidme.service.MessageService;
 import ua.auction.bidme.service.UserService;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DefaultUserService implements UserService {
@@ -27,6 +28,7 @@ public class DefaultUserService implements UserService {
     public UserData get(int id) {
         User user = userDao.get(id);
         List<Message> messages = messageService.getAll(id);
+        Collections.sort(messages);
         return new UserData(user, messages);
     }
 }
