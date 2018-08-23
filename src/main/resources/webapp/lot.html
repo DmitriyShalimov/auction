@@ -5,31 +5,72 @@
 <header th:insert="header.html :: header"></header>
 <!--main-content-->
 
-<section id="main" class=" row">
-    <H1 style="margin-left: 30%" id="title" th:text=${lot.title}></H1><br>
-    <div style="margin-left: 30%" class="lot-tile">
-        <div th:text="${lot.status}"></div>
-        <img width="400" height="300" th:src=${lot.image}>
+<section id="main">
+    <div class="row lot-container">
+        <div class="col-4 float-left lot-left">
+            <div class="lot-tile align-self-center">
+                <img class="mx-auto d-block" width="400" height="300" th:src=${lot.image}>
+            </div>
+        </div>
+        <div class="col-6 float-right lot-right">
+            <div class="row">
+                <div class="row lot-info-row">
+                    <div class="col">
+                        <h3 id="title" th:text=${lot.title}></h3>
+                    </div>
+                </div>
+                <div class="row lot-info-row">
+                    <div class="col text-right">
+                        <h4 th:text="${lot.status}"></h4>
+                    </div>
+                </div>
+                <div class="row lot-info-row">
+                    <div class="col float-left">
+                        <div class="row lot-info-row">
+                            <div class="col price">
+                                <span class="font-weight-bold">Price:</span>
+                                <span th:if="${lot.currentPrice} > 0" th:text=${lot.currentPrice}></span>
+                                <span th:if="${lot.currentPrice} == 0" th:text=${lot.startPrice}></span>
+                                <span>UAH</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col float-right">
+                        <div class="row endDate">
+                            <div class="col text-right">
+                                <span class="font-weight-bold">Ends</span><br/>
+                                <span th:text="${#temporals.format(lot.endTime, 'dd-MM-yyyy HH:mm')}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row lot-info-row">
+                    <div class="col">
+                        <form th:if="${active}" id="bid-button" action="/lot" method="post">
+                            <input type="text" hidden
+                                   th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}"
+                                   name="price"
+                                   id="price">
+                            <input type="text" hidden th:value="${lot.id}" name="id" id="id">
+                            <input type="text" hidden th:value="${lot.title}" name="lotTitle" id="lotTitle">
+                            <button class="btn btn-dark" type="submit">BID ME</button>
+                        </form>
 
-        <span th:if="${lot.currentPrice} > 0" th:text=${lot.currentPrice}></span>
-        <span th:if="${lot.currentPrice} == 0" th:text=${lot.startPrice}></span>
-
+                        <H1 th:if=${result} th:text=${result}></H1>
+                    </div>
+                </div>
+                <div class="row lot-info-row">
+                    <div class="col">
+                        <H5 class="description">Description</H5>
+                        <p class="description" th:text=${lot.description}></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <H5 id="description" th:text=${lot.description}></H5>
-
-    <form th:if="${active}" id="bid-button" action="/lot" method="post">
-        <input type="text" hidden th:value="${lot.currentPrice > 0}? ${lot.currentPrice}: ${lot.startPrice}" name="price"
-               id="price">
-        <input type="text" hidden th:value="${lot.id}" name="id" id="id">
-        <input type="text" hidden th:value="${lot.title}" name="lotTitle" id="lotTitle">
-        <button type="submit">BID ME</button>
-    </form>
-    <H1 th:if=${result} th:text=${result}></H1>
 </section>
 
-
-
-</div><!-- End of #main-content -->
+<!-- End of #main-content -->
 
 <!--Footer-->
 <footer th:insert="footer.html :: footer"></footer>

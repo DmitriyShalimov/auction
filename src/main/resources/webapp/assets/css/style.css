@@ -1,13 +1,11 @@
 body {
     font-size: 16px;
     color: #fff;
-    /*   background-color: #C7C7C7;*/
 }
 
 /*Header*/
 .navbar {
     background-color: #222;
-    /*background-color: #828282;*/
 }
 
 .navbar-brand {
@@ -56,6 +54,14 @@ body {
     font-size: 1.4em;
     margin-left: 60%;
 }
+.lot-container{
+    margin: 20px;
+}
+
+.lot-left{
+    margin-right: 15px;
+}
+
 .lot-tile {
     position: relative;
     border: 3px solid #DBDBDB;
@@ -91,7 +97,7 @@ body {
     left: 0;
 }
 
-#pagination, #bid-button {
+#pagination{
     margin-left: 50%;
     margin-bottom: 10px;
 }
@@ -99,6 +105,14 @@ body {
 #description {
     margin-right: 10%;
     margin-left: 10%;
+}
+
+#bid-button{
+    margin: 10px 0;
+}
+
+.lot-info-row{
+    width: 100%;
 }
 
 /*login form*/
