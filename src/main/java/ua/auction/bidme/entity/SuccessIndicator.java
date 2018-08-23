@@ -3,7 +3,6 @@ package ua.auction.bidme.entity;
 import static java.util.Arrays.stream;
 
 public enum SuccessIndicator {
-
     SUCCESS("S"), FAIL("F");
     private String id;
 
@@ -21,5 +20,4 @@ public enum SuccessIndicator {
     public String getId() {
         return id;
     }
-
 }

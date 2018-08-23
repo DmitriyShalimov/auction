@@ -14,7 +14,6 @@ import static java.time.LocalDateTime.now;
 import static ua.auction.bidme.entity.LotStatus.ACTIVE;
 
 public class DefaultLotService implements LotService {
-
     private final LotDao lotDao;
     private final BidListener bidListener;
 

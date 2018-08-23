@@ -19,8 +19,8 @@ public class BidListener {
     private Map<Integer, User> bidLeader = new HashMap<>();
     private MessageDao messageDao;
     private final static String LOWER_BID_MESSAGE = "Someone made a higher bid for %s%n";
-    private final static String HIGHER_BID_MESSAGE = "Your bid for %s%n are leading now. Congratulations!";
-    private final static String WIN_MESSAGE = "You are win lot %s%n. Congratulations!";
+    private final static String HIGHER_BID_MESSAGE = "Your bid for {%s%n} are leading now. Congratulations!";
+    private final static String WIN_MESSAGE = "You are win lot {%s%n}. Congratulations!";
 
     public BidListener(MessageDao messageDao) {
         this.messageDao = messageDao;

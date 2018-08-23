@@ -14,10 +14,8 @@ import static javax.servlet.http.HttpServletResponse.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ua.auction.bidme.web.templater.PageGenerator.instance;
 
-//todo replace domain with dto
 public class LoginServlet extends HttpServlet {
     private final Logger logger = getLogger(getClass());
-
     private final AuthenticationService authenticationService;
     private final LoggedUserStorage storage;
 

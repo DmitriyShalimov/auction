@@ -39,12 +39,10 @@ public class JdbcMessageDao implements MessageDao {
             while (resultSet.next()) {
                 messages.add(MESSAGE_MAPPER.mapRow(resultSet));
             }
-
         } catch (SQLException e) {
             logger.error("an error {} occurred during getMessagesByUserId {} from db", e.getMessage(), userId);
             throw new RuntimeException(e);
         }
-
         logger.info("query getMessagesByUserId {} to db finished. message size is {} .it took {} ms",
                 userId, messages.size(), currentTimeMillis() - start);
         return messages;

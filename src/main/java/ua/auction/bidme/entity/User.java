@@ -25,7 +25,6 @@ public class User {
         return password;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,8 +32,7 @@ public class User {
         User user = (User) o;
         return id == user.id &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password)
-                /* Objects.equals(messages, user.messages)*/;
+                Objects.equals(password, user.password);
     }
 
     @Override
@@ -55,7 +53,6 @@ public class User {
         private final String email;
         private int id;
         private String password;
-        /*  private List<Message> messages;*/
 
         public Builder(String email) {
             this.email = email;
@@ -66,11 +63,6 @@ public class User {
             return this;
         }
 
-        /*  public Builder messages(List<Message> messages) {
-              this.messages = messages;
-              return this;
-          }
-  */
         public Builder password(String password) {
             this.password = password;
             return this;
@@ -79,7 +71,5 @@ public class User {
         public User build() {
             return new User(this);
         }
-
     }
-
 }

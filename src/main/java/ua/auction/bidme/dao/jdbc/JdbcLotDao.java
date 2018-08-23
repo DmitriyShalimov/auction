@@ -39,7 +39,6 @@ public class JdbcLotDao implements LotDao {
     public List<Lot> getAll(LotFilter lotFilter) {
         logger.info("starting query getAllLots to db ...");
         long start = currentTimeMillis();
-
         StringBuilder query = generateQuery(lotFilter);
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
@@ -68,15 +67,14 @@ public class JdbcLotDao implements LotDao {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query.toString())) {
             resultSet.next();
-            int lotCount = resultSet.getInt("rowcount");
-            logger.info("starting query getLotsCount to finished. count {}. It  took {} ms", lotCount, currentTimeMillis() - start);
+            int lotCount = resultSet.getInt("row_count");
+            logger.info("starting query getLotsCount to finished. count {}. It took {} ms", lotCount, currentTimeMillis() - start);
             return (int) Math.ceil(lotCount * 1.0 / lotFilter.getLotPerPage());
         } catch (SQLException e) {
             logger.error("an error {} occurred during getLotsCount", e);
             throw new RuntimeException(e);
         }
     }
-
 
     private StringBuilder generateQuery(LotFilter lotFilter) {
         StringBuilder query = new StringBuilder(GET_ALL_LOTS_SQL);
@@ -98,7 +96,7 @@ public class JdbcLotDao implements LotDao {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             Lot lot = LOT_ROW_MAPPER.mapRow(resultSet);
-            logger.info("query getLot from db finished. lot {}. It  took {} ms", lot, currentTimeMillis() - start);
+            logger.info("query getLot from db finished. lot {}. It took {} ms", lot, currentTimeMillis() - start);
             return lot;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -116,7 +114,7 @@ public class JdbcLotDao implements LotDao {
             statement.setInt(3, lotId);
             statement.setInt(4, price);
             int result = statement.executeUpdate();
-            logger.info("query makeBid from db finished. lotId {}. It  took {} ms", lotId, currentTimeMillis() - start);
+            logger.info("query makeBid from db finished. lotId {}. It took {} ms", lotId, currentTimeMillis() - start);
             return result == 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);

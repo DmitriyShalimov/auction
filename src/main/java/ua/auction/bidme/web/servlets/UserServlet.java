@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.thymeleaf.context.WebContext;
 import ua.auction.bidme.entity.UserData;
 import ua.auction.bidme.service.UserService;
-import ua.auction.bidme.web.templater.PageGenerator;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,6 @@ public class UserServlet extends HttpServlet {
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
         long start = currentTimeMillis();
         int id = parseInt(request.getParameter("id"));
-
         logger.info("start getting user page with id {} and user messages ", id);
         UserData userData = userService.get(id);
         Map<String, Object> pageVariables = new HashMap<>();
@@ -42,7 +40,6 @@ public class UserServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().println(instance().getPage(context, "user"));
         response.setStatus(SC_OK);
-
         logger.info("user {} has been received. it took {}ms",
                 userData.getUser().getEmail(), currentTimeMillis() - start);
     }

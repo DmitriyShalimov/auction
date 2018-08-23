@@ -10,7 +10,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class LoggedUserStorage {
     private final Logger logger = getLogger(getClass());
-
     private Map<String, User> storage;
 
     public LoggedUserStorage() {
@@ -22,8 +21,8 @@ public class LoggedUserStorage {
         return storage.put(sessionId, user) != null;
     }
 
-    public boolean isLogged(String sesionId) {
-        return storage.containsKey(sesionId);
+    public boolean isLogged(String sessionId) {
+        return storage.containsKey(sessionId);
     }
 
     public void logOut(String sessionId) {
@@ -34,5 +33,4 @@ public class LoggedUserStorage {
     public User getLoggedUser(String sessionId) {
         return storage.get(sessionId);
     }
-
 }
