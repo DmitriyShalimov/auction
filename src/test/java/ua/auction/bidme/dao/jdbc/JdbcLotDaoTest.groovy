@@ -26,7 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew
 class JdbcLotDaoTest {
 
     Properties queryProperties = new PropertyReader("properties/query.properties").readProperties()
-    private final String GET_ALL_LOTS_SQL = "SELECT id, name, description, start_price, current_price, start_time,end_time,status, picture_link FROM auction.lot  LIMIT 0 OFFSET 0"
+    private final String GET_ALL_LOTS_SQL = "SELECT id, name, description, start_price, current_price, start_time,end_time,status, picture_link FROM auction.lot LIMIT 0 OFFSET 0"
     private final String GET_LOTS_COUNT = queryProperties.getProperty("GET_LOTS_COUNT")
     private final String GET_LOTS_BY_ID_SQL = queryProperties.getProperty("GET_LOTS_BY_ID_SQL")
     private final String MAKE_BID_SQL = queryProperties.getProperty("MAKE_BID_SQL")
