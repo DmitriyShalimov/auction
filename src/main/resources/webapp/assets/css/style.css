@@ -98,8 +98,9 @@ body {
 }
 
 #pagination{
-    margin-left: 50%;
-    margin-bottom: 10px;
+    position: center;
+    display: inline-block;
+    margin: auto;
 }
 
 #description {

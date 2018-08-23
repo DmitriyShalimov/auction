@@ -15,13 +15,11 @@ public class QueryGenerator {
                 .append(quote ? quote(value) : value);
     }
 
-
     public static StringBuilder limit(StringBuilder query, int value) {
         return query
                 .append(LIMIT)
                 .append(value);
     }
-
 
     public static StringBuilder limitOffset(StringBuilder query, int value, int offset) {
         return offset(limit(query, value), offset);
@@ -36,5 +34,4 @@ public class QueryGenerator {
     private static StringBuilder quote(String param) {
         return new StringBuilder(SINGLE_QUOTE).append(param).append(SINGLE_QUOTE);
     }
-
 }

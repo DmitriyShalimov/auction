@@ -4,9 +4,9 @@
 <body>
 <header th:insert="header.html :: header"></header>
 <!--main-content-->
-<div  class="container status">
+<div class="container status">
 
-    <input id="status"  type="checkbox" name="status" th:checked="${active}">Show only active<br>
+    <input id="status" type="checkbox" name="status" th:checked="${active}">Show only active<br>
 </div>
 <section class=" row">
     <div class="col-lg-4 col-md-6 col-sm-12  " th:each="lot : ${lots}">
@@ -17,38 +17,45 @@
         </div>
     </div>
 </section>
-
-<nav id="pagination" aria-label="Page navigation">
-    <ul th:unless="${active}" class="pagination">
-        <li th:unless="${currentPage}==1" class="page-item">
-            <a class="page-link" href="/auction?page=1"><<</a></li>
-        <li th:unless="${currentPage}==1" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${currentPage-1}}"><</a></li>
-        <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+5)}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
-        <li th:if="${pageCount}<5" th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
-        <li th:unless="${currentPage}==${pageCount}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${currentPage+1}}">></a></li>
-        <li th:unless="${currentPage}==${pageCount}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${pageCount}}">>></a></li>
-    </ul>
-    <!--////////////////////////////////////////    -->
-    <ul th:if="${active}" class="pagination">
-        <li th:unless="${currentPage}==1" class="page-item">
-            <a class="page-link" href="/auction?page=1&status=A"><<</a></li>
-        <li th:unless="${currentPage}==1" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${currentPage-1}+'&status=A'}"><</a></li>
-        <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+5)}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${page}+'&status=A'}" th:text="${page}"></a></li>
-        <li th:if="${pageCount}<5" th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${page}+'&status=A'}" th:text="${page}"></a></li>
-        <li th:unless="${currentPage}==${pageCount}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${currentPage+1}+'&status=A'}">></a></li>
-        <li th:unless="${currentPage}==${pageCount}" class="page-item">
-            <a class="page-link" th:href="@{'/auction?page='+${pageCount}+'&status=A'}">>></a></li>
-    </ul>
-</nav>
+<section class=" row">
+    <div class="col-4"></div>
+    <div class="col-4 ">
+        <nav id="pagination" aria-label="lots-pagination">
+            <ul th:unless="${active}" class="pagination">
+                <li th:unless="${currentPage}==1" class="page-item">
+                    <a class="page-link" href="/auction?page=1"><<</a></li>
+                <li th:unless="${currentPage}==1" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${currentPage-1}}"><</a></li>
+                <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+5)}"
+                    class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
+                <li th:if="${pageCount}<5" th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
+                <li th:unless="${currentPage}==${pageCount}" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${currentPage+1}}">></a></li>
+                <li th:unless="${currentPage}==${pageCount}" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${pageCount}}">>></a></li>
+            </ul>
+            <!--////////////////////////////////////////    -->
+            <ul th:if="${active}" class="pagination">
+                <li th:unless="${currentPage}==1" class="page-item">
+                    <a class="page-link" href="/auction?page=1&status=A"><<</a></li>
+                <li th:unless="${currentPage}==1" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${currentPage-1}+'&status=A'}"><</a></li>
+                <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+5)}"
+                    class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${page}+'&status=A'}" th:text="${page}"></a></li>
+                <li th:if="${pageCount}<5" th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${page}+'&status=A'}" th:text="${page}"></a></li>
+                <li th:unless="${currentPage}==${pageCount}" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${currentPage+1}+'&status=A'}">></a></li>
+                <li th:unless="${currentPage}==${pageCount}" class="page-item">
+                    <a class="page-link" th:href="@{'/auction?page='+${pageCount}+'&status=A'}">>></a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-4"></div>
+</section>
 <!-- End of #main-content -->
 
 <!--Footer-->

@@ -7,7 +7,6 @@ import java.util.Optional;
 import static org.mindrot.jbcrypt.BCrypt.checkpw;
 
 public class AuthenticationService {
-
     private final UserService userService;
     private final LoggedUserStorage storage;
 

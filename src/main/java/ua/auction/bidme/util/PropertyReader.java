@@ -20,16 +20,14 @@ public class PropertyReader {
     public Properties readProperties() {
         logger.info("reading properties from file {}", propertyFileName);
         Properties prop = new Properties();
-
         try (final InputStream inputStream = currentThread()
                 .getContextClassLoader()
                 .getResourceAsStream(propertyFileName)) {
             prop.load(inputStream);
         } catch (IOException e) {
-            logger.error("error {} occured duaring reading property file {}", e.getMessage(), propertyFileName);
+            logger.error("error {} occurred during reading property file {}", e.getMessage(), propertyFileName);
             throw new RuntimeException(e);
         }
-
         return prop;
     }
 }

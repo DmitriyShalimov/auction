@@ -3,7 +3,6 @@ package ua.auction.bidme.web.security;
 import org.slf4j.Logger;
 import ua.auction.bidme.service.security.LoggedUserStorage;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +20,7 @@ public class LogOutServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String sessionId = req.getSession().getId();
         logger.info("logout user with session id {}", sessionId);
         storage.logOut(sessionId);

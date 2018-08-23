@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ua.auction.bidme.entity.LotStatus.getTypeById;
 
 public class HomeServlet extends HttpServlet {
     private static final int LOTS_PER_PAGE = 6;
+    private static final int FIRST_PAGE = 1;
     private final Logger logger = getLogger(getClass());
     private final LoggedUserStorage storage;
     private final LotService lotService;
@@ -38,9 +38,8 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         long start = currentTimeMillis();
         logger.info("starting request home page to get all lots");
-
         WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
-        int page = Optional.ofNullable(request.getParameter("page")).map(Integer::parseInt).orElse(1);
+        int page = Optional.ofNullable(request.getParameter("page")).map(Integer::parseInt).orElse(FIRST_PAGE);
         LotFilter lotFilter = new LotFilter();
         lotFilter.setPage(page);
         Map<String, Object> pageVariables = new HashMap<>();

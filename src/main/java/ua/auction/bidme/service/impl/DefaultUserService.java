@@ -10,7 +10,6 @@ import ua.auction.bidme.service.UserService;
 import java.util.List;
 
 public class DefaultUserService implements UserService {
-
     private final UserDao userDao;
     private final MessageService messageService;
 
@@ -30,5 +29,4 @@ public class DefaultUserService implements UserService {
         List<Message> messages = messageService.getAll(id);
         return new UserData(user, messages);
     }
-
 }

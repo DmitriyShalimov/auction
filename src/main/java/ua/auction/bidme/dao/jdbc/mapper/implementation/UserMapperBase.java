@@ -9,11 +9,8 @@ import java.sql.SQLException;
 public class UserMapperBase implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet resultSet) throws SQLException {
-
-
         String email = resultSet.getString("email");
         String password = resultSet.getString("password");
-
         return new User.Builder(email)
                 .password(password)
                 .build();

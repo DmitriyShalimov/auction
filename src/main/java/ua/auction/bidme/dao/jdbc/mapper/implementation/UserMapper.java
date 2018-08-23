@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserMapper extends UserMapperBase {
-
     @Override
     public User mapRow(ResultSet resultSet) throws SQLException {
         User user = super.mapRow(resultSet);
