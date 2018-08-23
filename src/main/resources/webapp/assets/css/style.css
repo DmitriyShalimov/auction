@@ -48,7 +48,7 @@ body {
 #main{
     height: 100%;
 }
-#status {
+.status {
     padding: 15px;
     width: 300px;
     font-size: 1.4em;
