@@ -3,11 +3,14 @@
 <head th:insert="head.html :: head"></head>
 <body>
 <header th:insert="header.html :: header"></header>
-<!--main-content-->
-<div class="container status">
 
-    <input id="status" type="checkbox" name="status" th:checked="${active}">Show only active<br>
-</div>
+<form id="statusSection">
+    <select class="status">
+        <option value="/">Show all lots</option>
+        <option value="/?status=A" th:selected="${active}">Show only active lots</option>
+    </select>
+</form>
+
 <section class=" row">
     <div class="col-lg-4 col-md-6 col-sm-12  " th:each="lot : ${lots}">
         <div class="lot-tile">
@@ -26,7 +29,7 @@
                     <a class="page-link" href="/auction?page=1"><<</a></li>
                 <li th:unless="${currentPage}==1" class="page-item">
                     <a class="page-link" th:href="@{'/auction?page='+${currentPage-1}}"><</a></li>
-                <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+5)}"
+                <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+4)}"
                     class="page-item">
                     <a class="page-link" th:href="@{'/auction?page='+${page}}" th:text="${page}"></a></li>
                 <li th:if="${pageCount}<5" th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item">
@@ -36,13 +39,12 @@
                 <li th:unless="${currentPage}==${pageCount}" class="page-item">
                     <a class="page-link" th:href="@{'/auction?page='+${pageCount}}">>></a></li>
             </ul>
-            <!--////////////////////////////////////////    -->
             <ul th:if="${active}" class="pagination">
                 <li th:unless="${currentPage}==1" class="page-item">
                     <a class="page-link" href="/auction?page=1&status=A"><<</a></li>
                 <li th:unless="${currentPage}==1" class="page-item">
                     <a class="page-link" th:href="@{'/auction?page='+${currentPage-1}+'&status=A'}"><</a></li>
-                <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+5)}"
+                <li th:if="${pageCount}>5" th:each="page : ${#numbers.sequence( currentPage, currentPage+4)}"
                     class="page-item">
                     <a class="page-link" th:href="@{'/auction?page='+${page}+'&status=A'}" th:text="${page}"></a></li>
                 <li th:if="${pageCount}<5" th:each="page : ${#numbers.sequence( 1, pageCount)}" class="page-item">
@@ -68,15 +70,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
         integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
-
 <script>
-    var checkbox = document.querySelector("input[id=status]");
-    checkbox.addEventListener('change', function () {
-        if (this.checked) {
-            window.location.href = "/?status=A";
-        } else {
-            window.location.href = "/";
-        }
+    $(".status").change(function () {
+        window.location.href = this.value;
     });
 </script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
