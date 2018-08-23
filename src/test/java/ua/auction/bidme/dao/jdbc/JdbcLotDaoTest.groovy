@@ -78,7 +78,7 @@ class JdbcLotDaoTest {
         when(connection.createStatement()).thenReturn(statement)
         when(statement.executeQuery(GET_LOTS_COUNT)).thenReturn(resultSet)
         when(resultSet.next()).thenReturn(true).thenReturn(false)
-        when(resultSet.getInt("rowcount")).thenReturn(6)
+        when(resultSet.getInt("row_count")).thenReturn(6)
         when(lotFilter.getLotPerPage()).thenReturn(6)
 
         //when
