@@ -2,7 +2,7 @@ package ua.auction.bidme.entity;
 
 import java.time.LocalDateTime;
 
-public class Message {
+public class Message implements Comparable<Message> {
     private final int id;
     private final String text;
     private final SuccessIndicator indicator;
@@ -53,6 +53,11 @@ public class Message {
                 ", user=" + userId +
                 ", dateTime=" + dateTime +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Message o) {
+        return o.dateTime.compareTo(this.dateTime);
     }
 
     public static class Builder {
